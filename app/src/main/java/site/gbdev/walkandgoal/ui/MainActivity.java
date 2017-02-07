@@ -1,8 +1,9 @@
-package site.gbdev.walkandgoal;
+package site.gbdev.walkandgoal.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import site.gbdev.walkandgoal.R;
+import site.gbdev.walkandgoal.ui.history.HistoryFragment;
+import site.gbdev.walkandgoal.ui.home.HomeFragment;
+import site.gbdev.walkandgoal.ui.statistics.StatisticsFragment;
+import site.gbdev.walkandgoal.ui.test.TestFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +47,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Fragment newFragment = new HomeFragment();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_main, newFragment)
+                .commit();
     }
 
     @Override
@@ -52,47 +66,29 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Fragment newFragment = new HomeFragment();
 
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.nav_history) {
-
+            newFragment = new HistoryFragment();
         } else if (id == R.id.nav_statistics) {
-
+            newFragment = new StatisticsFragment();
         } else if (id == R.id.nav_test) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+            newFragment = new TestFragment();
+        } else if (id == R.id.nav_settings) {
 
         }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.content_main, newFragment)
+                .commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
