@@ -23,6 +23,8 @@ import site.gbdev.walkandgoal.ui.test.TestFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,6 +49,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.getMenu().getItem(0).setChecked(true);
 
         Fragment newFragment = new HomeFragment();
 
@@ -74,12 +78,15 @@ public class MainActivity extends AppCompatActivity
         Fragment newFragment = new HomeFragment();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            fab.show();
         } else if (id == R.id.nav_history) {
+            fab.hide();
             newFragment = new HistoryFragment();
         } else if (id == R.id.nav_statistics) {
+            fab.hide();
             newFragment = new StatisticsFragment();
         } else if (id == R.id.nav_test) {
+            fab.show();
             newFragment = new TestFragment();
         } else if (id == R.id.nav_settings) {
 
