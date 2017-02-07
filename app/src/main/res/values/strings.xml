@@ -4,5 +4,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="screen_home">Home</string>
+    <string name="screen_history">History</string>
+    <string name="screen_statistics">Statistics</string>
+    <string name="screen_test">Test Mode</string>
     <string name="action_settings">Settings</string>
 </resources>
