@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/item_home"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:layout_width="match_parent"
+    android:id="@+id/home_cardview"
+    android:layout_margin="10dp">
 
-    <TextView
+    <RelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/item_goal_name"
-        android:textSize="22sp"
-        android:maxLines="1"
-        android:ellipsize="marquee"
-        android:textColor="@color/colorTextPrimary"
-        android:text="Walk The Dog" />
+        android:id="@+id/item_home"
+        android:padding="10dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/item_goal_distance"
-        android:textSize="18sp"
-        android:maxLines="1"
-        android:ellipsize="marquee"
-        android:layout_below="@+id/item_goal_name"
-        android:textColor="@color/colorTextSecondary"
-        android:text="800 Metres" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/item_goal_name"
+            android:textSize="22sp"
+            android:maxLines="1"
+            android:ellipsize="marquee"
+            android:textColor="@color/colorTextPrimary"
+            android:text="Walk The Dog" />
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/item_goal_distance"
+            android:textSize="18sp"
+            android:maxLines="1"
+            android:ellipsize="marquee"
+            android:layout_below="@+id/item_goal_name"
+            android:textColor="@color/colorTextSecondary"
+            android:text="800 Metres" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
