@@ -5,7 +5,10 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:id="@+id/home_cardview"
-    android:layout_margin="10dp">
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp" >
 
     <RelativeLayout
         android:orientation="vertical"
@@ -18,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/item_goal_name"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:maxLines="1"
             android:ellipsize="marquee"
             android:textColor="@color/colorTextPrimary"
@@ -28,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/item_goal_distance"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:maxLines="1"
             android:ellipsize="marquee"
             android:layout_below="@+id/item_goal_name"

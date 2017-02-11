@@ -18,6 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.AddProgressActivity"
+            android:label="@string/activity_add_progress"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName="site.gbdev.walkandgoal.ui.MainActivity">
+        </activity>
     </application>
 
 </manifest>

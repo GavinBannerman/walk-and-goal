@@ -1,5 +1,6 @@
 package site.gbdev.walkandgoal.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -36,8 +37,15 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_main);
+                if (currentFragment.getClass() == HomeFragment.class){
+
+                    Intent intent = new Intent(getBaseContext(), AddProgressActivity.class);
+                    startActivity(intent);
+
+                } else if (currentFragment.getClass() == TestFragment.class){
+                    //TODO Launch add new test data activity
+                }
             }
         });
 
@@ -56,7 +64,7 @@ public class MainActivity extends AppCompatActivity
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_main, newFragment)
+                .replace(R.id.content_main, newFragment, "home")
                 .commit();
     }
 
@@ -76,16 +84,20 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Fragment newFragment = new HomeFragment();
+        String tag = "home";
 
         if (id == R.id.nav_home) {
             fab.show();
         } else if (id == R.id.nav_history) {
+            tag = "history";
             fab.hide();
             newFragment = new HistoryFragment();
         } else if (id == R.id.nav_statistics) {
+            tag = "statistics";
             fab.hide();
             newFragment = new StatisticsFragment();
         } else if (id == R.id.nav_test) {
+            tag = "test";
             fab.show();
             newFragment = new TestFragment();
         } else if (id == R.id.nav_settings) {

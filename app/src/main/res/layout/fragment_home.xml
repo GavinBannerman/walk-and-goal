@@ -12,8 +12,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="0dp"
-        app:cardBackgroundColor="@color/colorCardHighlight">
+        android:layout_marginBottom="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -84,6 +83,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/home_recycler"
-        android:overScrollMode="never"/>
+        android:overScrollMode="never"
+        android:paddingTop="0dp"
+        android:paddingBottom="5dp"/>
 
 </LinearLayout>

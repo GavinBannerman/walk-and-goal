@@ -10,6 +10,4 @@
     tools:showIn="@layout/app_bar_main"
     android:layout_weight="1"
     android:background="#FFFFFF">
-
-
 </FrameLayout>
