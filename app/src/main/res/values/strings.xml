@@ -32,4 +32,8 @@
         <item>Miles</item>
     </string-array>
 
+    <string name="history_day_goal_divider">GOAL</string>
+
+    <string name="prompt_pick_date">Pick Date</string>
+
 </resources>
