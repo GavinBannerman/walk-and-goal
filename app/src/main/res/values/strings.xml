@@ -4,6 +4,11 @@
     <string name="activity_add_progress">Add Activity</string>
     <string name="activity_add_goal">Add New Goal</string>
 
+    <string name="menu_item_home_active">Make Active</string>
+    <string name="menu_item_home_edit">Edit</string>
+    <string name="menu_item_home_delete">Delete</string>
+
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

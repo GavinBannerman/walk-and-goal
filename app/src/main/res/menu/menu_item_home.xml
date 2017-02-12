@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_item_home_active"
+        android:title="@string/menu_item_home_active" />
+
+    <item
+        android:id="@+id/menu_item_home_edit"
+        android:title="@string/menu_item_home_edit" />
+
+    <item
+        android:id="@+id/menu_item_home_delete"
+        android:title="@string/menu_item_home_delete" />
+</menu>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,7 +31,8 @@ import site.gbdev.walkandgoal.ui.AddProgressActivity;
 public class HomeFragment extends Fragment {
 
     Context context;
-    List<Goal> goals = new ArrayList<>();;
+    List<Goal> goals = new ArrayList<>();
+    RecyclerView recyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,15 +60,43 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.home_recycler);
+        recyclerView = (RecyclerView) getView().findViewById(R.id.home_recycler);
         recyclerView.setHasFixedSize(true);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(goals);
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(goals, context);
         recyclerView.setAdapter(adapter);
+        registerForContextMenu(recyclerView);
 
+        final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+        {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                if (dy > 0 && fab.isShown())
+                {
+                    fab.hide();
+                } else {
+                    fab.show();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState)
+            {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     public void onCreateOptionsMenu(
