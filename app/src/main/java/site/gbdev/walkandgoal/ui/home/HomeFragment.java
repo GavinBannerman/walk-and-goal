@@ -1,6 +1,7 @@
 package site.gbdev.walkandgoal.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,6 +20,8 @@ import java.util.List;
 
 import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.models.Goal;
+import site.gbdev.walkandgoal.ui.AddGoalActivity;
+import site.gbdev.walkandgoal.ui.AddProgressActivity;
 
 /**
  * Created by gavin on 07/02/2017.
@@ -68,5 +72,17 @@ public class HomeFragment extends Fragment {
     public void onCreateOptionsMenu(
             Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_home, menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_add_goal:
+                Intent intent = new Intent(context, AddGoalActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
