@@ -1,19 +1,23 @@
 package site.gbdev.walkandgoal.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import site.gbdev.walkandgoal.R;
 
-public class AddProgressActivity extends AppCompatActivity {
+/**
+ * Created by gavin on 12/02/2017.
+ */
+
+public class AddGoalActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_progress);
+        setContentView(R.layout.activity_add_goal);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

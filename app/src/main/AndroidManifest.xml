@@ -23,6 +23,11 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName="site.gbdev.walkandgoal.ui.MainActivity">
         </activity>
+        <activity android:name=".ui.AddGoalActivity"
+            android:label="@string/activity_add_goal"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName="site.gbdev.walkandgoal.ui.MainActivity">
+        </activity>
     </application>
 
 </manifest>

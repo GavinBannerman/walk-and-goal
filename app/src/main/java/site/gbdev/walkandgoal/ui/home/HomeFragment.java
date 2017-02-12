@@ -8,6 +8,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -37,6 +39,7 @@ public class HomeFragment extends Fragment {
         goals.add(new Goal("Goal Number 4", 100, "Yards"));
         goals.add(new Goal("More Goals", 25, "Miles"));
         goals.add(new Goal("This is a really long name for a goal", 10, "Steps"));
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -60,8 +63,10 @@ public class HomeFragment extends Fragment {
         HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(goals);
         recyclerView.setAdapter(adapter);
 
-//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-//                linearLayoutManager.getOrientation());
-//        recyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    public void onCreateOptionsMenu(
+            Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_home, menu);
     }
 }
