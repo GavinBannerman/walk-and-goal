@@ -1,8 +1,6 @@
-package site.gbdev.walkandgoal.ui;
+package site.gbdev.walkandgoal.ui.settings;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 
 import site.gbdev.walkandgoal.R;

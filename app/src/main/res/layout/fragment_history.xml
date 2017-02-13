@@ -10,7 +10,7 @@
         android:textSize="20sp"
         android:id="@+id/history_day_button"
         style="?android:attr/borderlessButtonStyle"
-        android:text="@string/screen_history"/>
+        android:text="@string/prompt_pick_date"/>
 
     <View
         android:layout_width="match_parent"
