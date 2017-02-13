@@ -109,7 +109,8 @@ public class MainActivity extends AppCompatActivity
             fab.show();
             newFragment = new TestFragment();
         } else if (id == R.id.nav_settings) {
-
+            Intent i = new Intent(this, PreferencesActivity.class);
+            startActivity(i);
         }
 
         currentFragment = newFragment;

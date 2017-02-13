@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_title"
+        android:key="pref_key_storage_settings">
+        <EditTextPreference
+            android:key="pref_mapping"
+            android:title="@string/pref_mapping"
+            android:summary="@string/pref_mapping_summary"
+            android:defaultValue="1" />
+        <SwitchPreference
+            android:key="pref_edit_goals"
+            android:title="@string/pref_edit_goals"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

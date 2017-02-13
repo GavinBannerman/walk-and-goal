@@ -44,11 +44,6 @@ public class HistoryFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-//        completedTextView = (TextView) getActivity().findViewById(R.id.history_day_completed);
-//        completedPercentTextView = (TextView) getActivity().findViewById(R.id.history_day_percent_completed);
-//        goalNameTextView = (TextView) getActivity().findViewById(R.id.history_day_goal_name);
-//        goalDistanceTextView = (TextView) getActivity().findViewById(R.id.history_day_goal_distance);
-//
         datePickerButton = (Button) getActivity().findViewById(R.id.history_day_button);
 
         datePickerButton.setOnClickListener(new View.OnClickListener() {

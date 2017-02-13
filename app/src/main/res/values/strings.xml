@@ -3,6 +3,7 @@
 
     <string name="activity_add_progress">Add Activity</string>
     <string name="activity_add_goal">Add New Goal</string>
+    <string name="activity_preferences">Settings</string>
 
     <string name="menu_item_home_active">Make Active</string>
     <string name="menu_item_home_edit">Edit</string>
@@ -35,5 +36,10 @@
     <string name="history_day_goal_divider">GOAL</string>
 
     <string name="prompt_pick_date">Pick Date</string>
+
+    <string name="pref_mapping">Steps to Metres Mapping</string>
+    <string name="pref_mapping_summary">Defines the length in metres that a step is equivalent to</string>
+    <string name="pref_edit_goals">Allow editing of goals</string>
+    <string name="pref_title">Settings</string>
 
 </resources>
