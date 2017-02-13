@@ -24,7 +24,7 @@ public class DatePickerFragment extends DialogFragment {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), (MainActivity)getActivity(), year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), (HistoryFragment) getActivity().getSupportFragmentManager().findFragmentByTag("history"), year, month, day);
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
 
         // Create a new instance of DatePickerDialog and return it

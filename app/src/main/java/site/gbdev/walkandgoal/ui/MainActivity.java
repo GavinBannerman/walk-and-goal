@@ -29,7 +29,7 @@ import site.gbdev.walkandgoal.ui.statistics.StatisticsFragment;
 import site.gbdev.walkandgoal.ui.test.TestFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DatePickerDialog.OnDateSetListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionButton fab;
     Fragment currentFragment;
@@ -116,33 +116,12 @@ public class MainActivity extends AppCompatActivity
         currentFragment = newFragment;
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_main, currentFragment)
+                .replace(R.id.content_main, currentFragment, tag)
                 .commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int day) {
-
-        TextView completedTextView = (TextView) currentFragment.getView().findViewById(R.id.history_day_completed);
-        TextView completedPercentTextView = (TextView) currentFragment.getView().findViewById(R.id.history_day_percent_completed);
-        TextView goalNameTextView = (TextView) currentFragment.getView().findViewById(R.id.history_day_goal_name);
-        TextView goalDistanceTextView = (TextView) currentFragment.getView().findViewById(R.id.history_day_goal_distance);
-        Button datePickerButton = (Button) currentFragment.getView().findViewById(R.id.history_day_button);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
-        String formattedDate = simpleDateFormat.format(calendar.getTime());
-
-        completedTextView.setText("2185 Steps");
-        completedPercentTextView.setText("73%");
-        goalNameTextView.setText("My Old Fitness Goal");
-        goalDistanceTextView.setText("3000 Steps");
-        datePickerButton.setText(formattedDate);
     }
 
 }
