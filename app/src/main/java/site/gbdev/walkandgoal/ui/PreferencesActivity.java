@@ -3,28 +3,24 @@ package site.gbdev.walkandgoal.ui;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.support.v7.app.AppCompatActivity;
 
 import site.gbdev.walkandgoal.R;
 
 /**
  * Created by gavin on 13/02/2017.
  */
-
-public class PreferencesActivity extends PreferenceActivity {
-
+public class PreferencesActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new PreferencesFragment()).commit();
-    }
+        setContentView(R.layout.activity_preferences);
 
-    public static class PreferencesFragment extends PreferenceFragment
-    {
-        @Override
-        public void onCreate(final Bundle savedInstanceState)
-        {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.preferences);
-        }
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        getFragmentManager().beginTransaction().replace(R.id.content_frame, new PreferencesFragment()).commit();
     }
 }

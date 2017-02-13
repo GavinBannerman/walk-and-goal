@@ -30,7 +30,7 @@
         </activity>
         <activity android:name=".ui.PreferencesActivity"
             android:label="@string/activity_preferences"
-            android:theme="@style/AppTheme."
+            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName="site.gbdev.walkandgoal.ui.MainActivity">
         </activity>
     </application>
