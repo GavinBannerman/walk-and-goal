@@ -18,6 +18,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.ui.history.HistoryFragment;
 import site.gbdev.walkandgoal.ui.home.HomeFragment;
@@ -123,7 +126,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        Log.w("ya", "ya");
 
         TextView completedTextView = (TextView) currentFragment.getView().findViewById(R.id.history_day_completed);
         TextView completedPercentTextView = (TextView) currentFragment.getView().findViewById(R.id.history_day_percent_completed);
@@ -131,11 +133,16 @@ public class MainActivity extends AppCompatActivity
         TextView goalDistanceTextView = (TextView) currentFragment.getView().findViewById(R.id.history_day_goal_distance);
         Button datePickerButton = (Button) currentFragment.getView().findViewById(R.id.history_day_button);
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
+        String formattedDate = simpleDateFormat.format(calendar.getTime());
+
         completedTextView.setText("2185 Steps");
         completedPercentTextView.setText("73%");
         goalNameTextView.setText("My Old Fitness Goal");
         goalDistanceTextView.setText("3000 Steps");
-        datePickerButton.setText(String.valueOf(day) + " " + String.valueOf(month) + " " + String.valueOf(year));
+        datePickerButton.setText(formattedDate);
     }
 
 }
