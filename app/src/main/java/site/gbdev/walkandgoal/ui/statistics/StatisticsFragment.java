@@ -1,9 +1,11 @@
 package site.gbdev.walkandgoal.ui.statistics;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,11 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.ui.AddGoalActivity;
+import site.gbdev.walkandgoal.ui.history.DatePickerFragment;
 
 /**
  * Created by gavin on 07/02/2017.
@@ -48,6 +57,56 @@ public class StatisticsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         final LinearLayout fromToDateSection = (LinearLayout) getView().findViewById(R.id.from_to_section);
+
+        Button fromButton = (Button) getView().findViewById(R.id.button_from_date);
+        Button toButton = (Button) getView().findViewById(R.id.button_to_date);
+
+        final DatePickerDialog.OnDateSetListener fromDateListener = new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+
+                Button datePickerButton = (Button) getView().findViewById(R.id.button_from_date);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, day);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
+                String formattedDate = simpleDateFormat.format(calendar.getTime());
+                datePickerButton.setText(formattedDate);
+            }
+        };
+
+        final DatePickerDialog.OnDateSetListener toDateListener = new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+
+                Button datePickerButton = (Button) getView().findViewById(R.id.button_to_date);
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, day);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
+                String formattedDate = simpleDateFormat.format(calendar.getTime());
+                datePickerButton.setText(formattedDate);
+            }
+        };
+
+        fromButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.setListener(fromDateListener);
+                DialogFragment dialogFragment = datePickerFragment;
+                dialogFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
+            }
+        });
+
+        toButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.setListener(toDateListener);
+                DialogFragment dialogFragment = datePickerFragment;
+                dialogFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
+            }
+        });
+
 
         Spinner spinner = (Spinner) getActivity().findViewById(R.id.spinner_show);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
