@@ -23,7 +23,7 @@ import site.gbdev.walkandgoal.R;
  * Created by gavin on 07/02/2017.
  */
 
-public class HistoryFragment extends Fragment implements DatePickerDialog.OnDateSetListener{
+public class HistoryFragment extends Fragment {
 
     Context context;
     TextView completedTextView, completedPercentTextView, goalNameTextView, goalDistanceTextView;
@@ -49,33 +49,37 @@ public class HistoryFragment extends Fragment implements DatePickerDialog.OnDate
 
         datePickerButton = (Button) getActivity().findViewById(R.id.history_day_button);
 
+        final DatePickerDialog.OnDateSetListener pickDateListener = new DatePickerDialog.OnDateSetListener() {
+
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+
+                TextView completedTextView = (TextView) getView().findViewById(R.id.history_day_completed);
+                TextView completedPercentTextView = (TextView) getView().findViewById(R.id.history_day_percent_completed);
+                TextView goalNameTextView = (TextView) getView().findViewById(R.id.history_day_goal_name);
+                TextView goalDistanceTextView = (TextView) getView().findViewById(R.id.history_day_goal_distance);
+                Button datePickerButton = (Button) getView().findViewById(R.id.history_day_button);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, day);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
+                String formattedDate = simpleDateFormat.format(calendar.getTime());
+
+                completedTextView.setText("2185 Steps");
+                completedPercentTextView.setText("73%");
+                goalNameTextView.setText("My Old Fitness Goal");
+                goalDistanceTextView.setText("3000 Steps");
+                datePickerButton.setText(formattedDate);
+            }
+        };
+
         datePickerButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                DialogFragment datePickerFragment = new DatePickerFragment();
-                datePickerFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.setListener(pickDateListener);
+                DialogFragment dialogFragment = datePickerFragment;
+                dialogFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
             }
         });
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int day) {
-
-        TextView completedTextView = (TextView) getView().findViewById(R.id.history_day_completed);
-        TextView completedPercentTextView = (TextView) getView().findViewById(R.id.history_day_percent_completed);
-        TextView goalNameTextView = (TextView) getView().findViewById(R.id.history_day_goal_name);
-        TextView goalDistanceTextView = (TextView) getView().findViewById(R.id.history_day_goal_distance);
-        Button datePickerButton = (Button) getView().findViewById(R.id.history_day_button);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
-        String formattedDate = simpleDateFormat.format(calendar.getTime());
-
-        completedTextView.setText("2185 Steps");
-        completedPercentTextView.setText("73%");
-        goalNameTextView.setText("My Old Fitness Goal");
-        goalDistanceTextView.setText("3000 Steps");
-        datePickerButton.setText(formattedDate);
     }
 }
