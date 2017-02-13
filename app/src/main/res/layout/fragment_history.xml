@@ -25,13 +25,13 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:id="@+id/history_day_completed"
-        android:textSize="30sp"/>
+        android:textSize="38sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textSize="26sp"
+        android:textSize="34sp"
         android:id="@+id/history_day_percent_completed"
         android:layout_gravity="center_horizontal"
         android:textColor="@color/colorAccent"/>
@@ -58,7 +58,7 @@
         android:id="@+id/history_day_goal_name"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
-        android:textSize="24sp"/>
+        android:textSize="32sp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -66,6 +66,6 @@
         android:layout_marginTop="10dp"
         android:id="@+id/history_day_goal_distance"
         android:layout_gravity="center_horizontal"
-        android:textSize="20sp"/>
+        android:textSize="28sp"/>
 
 </LinearLayout>
