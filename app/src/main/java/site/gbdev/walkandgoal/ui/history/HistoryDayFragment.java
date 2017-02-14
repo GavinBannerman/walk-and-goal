@@ -7,9 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,7 +23,7 @@ import site.gbdev.walkandgoal.ui.DatePickerFragment;
  * Created by gavin on 07/02/2017.
  */
 
-public class HistoryFragment extends Fragment {
+public class HistoryDayFragment extends Fragment {
 
     Context context;
     TextView completedTextView, completedPercentTextView, goalNameTextView, goalDistanceTextView;
@@ -36,7 +33,6 @@ public class HistoryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -44,7 +40,7 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_history, container, false);
+        return inflater.inflate(R.layout.fragment_history_day, container, false);
     }
 
     @Override
@@ -85,21 +81,5 @@ public class HistoryFragment extends Fragment {
                 dialogFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
             }
         });
-    }
-
-    public void onCreateOptionsMenu(
-            Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_statistics, menu);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.menu_change_units:
-                // TODO Add change units code here
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }

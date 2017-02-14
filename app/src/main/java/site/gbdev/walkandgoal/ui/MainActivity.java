@@ -1,11 +1,9 @@
 package site.gbdev.walkandgoal.ui;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,15 +12,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import site.gbdev.walkandgoal.R;
-import site.gbdev.walkandgoal.ui.history.HistoryFragment;
+import site.gbdev.walkandgoal.ui.history.HistoryTabFragment;
 import site.gbdev.walkandgoal.ui.home.HomeFragment;
 import site.gbdev.walkandgoal.ui.settings.PreferencesActivity;
 import site.gbdev.walkandgoal.ui.statistics.StatisticsFragment;
@@ -98,9 +90,9 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             fab.show();
         } else if (id == R.id.nav_history) {
-            tag = "history";
+            tag = "historytab";
             fab.hide();
-            newFragment = new HistoryFragment();
+            newFragment = new HistoryTabFragment();
         } else if (id == R.id.nav_statistics) {
             tag = "statistics";
             fab.hide();
