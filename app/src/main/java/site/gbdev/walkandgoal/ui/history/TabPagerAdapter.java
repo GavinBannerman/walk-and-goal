@@ -10,13 +10,11 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 
 public class TabPagerAdapter extends FragmentPagerAdapter {
-    final int PAGE_COUNT = 2;
-    private String tabTitles[] = new String[] { "Day", "Other" };
-    private Context context;
+    private final int PAGE_COUNT = 2;
+    private String tabTitles[] = new String[] { "DAY", "OTHER" };
 
-    public TabPagerAdapter(FragmentManager fm, Context context) {
+    public TabPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.context = context;
     }
 
     @Override

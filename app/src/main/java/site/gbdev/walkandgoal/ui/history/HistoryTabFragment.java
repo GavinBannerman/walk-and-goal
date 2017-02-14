@@ -44,7 +44,7 @@ public class HistoryTabFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         ViewPager viewPager = (ViewPager) getView().findViewById(R.id.viewpager);
-        viewPager.setAdapter(new TabPagerAdapter(getActivity().getSupportFragmentManager(), context));
+        viewPager.setAdapter(new TabPagerAdapter(getActivity().getSupportFragmentManager()));
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) getView().findViewById(R.id.tabs);
