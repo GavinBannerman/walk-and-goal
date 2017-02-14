@@ -2,12 +2,16 @@ package site.gbdev.walkandgoal.ui.history;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,11 +36,13 @@ import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.models.Goal;
 import site.gbdev.walkandgoal.ui.DatePickerFragment;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
 /**
  * Created by gavin on 14/02/2017.
  */
 
-public class HistoryOtherFragment extends Fragment {
+public class HistoryFragment extends Fragment {
 
     Context context;
     RecyclerView recyclerView;
@@ -58,7 +65,7 @@ public class HistoryOtherFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_history_other, container, false);
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
     @Override
@@ -69,6 +76,7 @@ public class HistoryOtherFragment extends Fragment {
 
         Button fromButton = (Button) getView().findViewById(R.id.button_from_date);
         Button toButton = (Button) getView().findViewById(R.id.button_to_date);
+        Button completionButton = (Button) getView().findViewById(R.id.button_filter_completion);
 
         recyclerView = (RecyclerView) getView().findViewById(R.id.history_other_recycler);
         recyclerView.setHasFixedSize(true);
@@ -126,6 +134,21 @@ public class HistoryOtherFragment extends Fragment {
             }
         });
 
+        completionButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+
+                // Create and show the dialog.
+                DialogFragment newFragment = CompletionDialogFragment.newInstance(2);
+                newFragment.show(ft, "dialog");
+            }
+        });
 
         Spinner spinner = (Spinner) getActivity().findViewById(R.id.spinner_show);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getContext(),
@@ -153,6 +176,22 @@ public class HistoryOtherFragment extends Fragment {
 
         });
 
+    }
+
+    public void onCreateOptionsMenu(
+            Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_statistics, menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_change_units:
+                // TODO Add change units code here
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

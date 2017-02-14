@@ -14,7 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import site.gbdev.walkandgoal.R;
-import site.gbdev.walkandgoal.ui.history.HistoryTabFragment;
+import site.gbdev.walkandgoal.ui.history.HistoryFragment;
 import site.gbdev.walkandgoal.ui.home.HomeFragment;
 import site.gbdev.walkandgoal.ui.settings.PreferencesActivity;
 import site.gbdev.walkandgoal.ui.statistics.StatisticsFragment;
@@ -90,9 +90,9 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             fab.show();
         } else if (id == R.id.nav_history) {
-            tag = "historytab";
+            tag = "history";
             fab.hide();
-            newFragment = new HistoryTabFragment();
+            newFragment = new HistoryFragment();
         } else if (id == R.id.nav_statistics) {
             tag = "statistics";
             fab.hide();

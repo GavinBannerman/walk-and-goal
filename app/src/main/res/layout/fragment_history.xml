@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -15,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/fragment_history_show"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textColor="@color/colorTextSecondary"/>
 
         <Spinner
@@ -32,7 +34,6 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginTop="5dp"
         android:id="@+id/from_to_section"
         android:visibility="gone">
 
@@ -42,7 +43,7 @@
             style="?android:attr/borderlessButtonStyle"
             android:text="@string/date_from"
             android:id="@+id/button_from_date"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_marginRight="10dp"
             android:textColor="@color/colorTextSecondary"
             />
@@ -51,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="-"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:id="@+id/date_seperator"/>
 
         <Button
@@ -60,7 +61,7 @@
             style="?android:attr/borderlessButtonStyle"
             android:id="@+id/button_to_date"
             android:text="@string/date_to"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/colorTextSecondary"
             />
@@ -81,8 +82,9 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
         android:text="@string/history_filter_completion"
-        android:textSize="20sp"
-        android:textColor="@color/colorTextSecondary" />
+        android:textSize="18sp"
+        android:textColor="@color/colorTextSecondary"
+        android:clickable="true"/>
 
     <View
         android:layout_width="match_parent"

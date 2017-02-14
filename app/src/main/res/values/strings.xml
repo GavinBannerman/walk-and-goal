@@ -76,4 +76,11 @@
 
     <string name="history_filter_completion">Filter by completion %</string>
 
+    <string-array name="completion_array">
+        <item>No percentage filter</item>
+        <item>Show goals completed below</item>
+        <item>Show goals completed above</item>
+        <item>Show fully completed goals</item>
+    </string-array>
+
 </resources>

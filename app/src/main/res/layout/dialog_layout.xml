@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/dialog_root"
+    android:padding="10dp">
+
+    <Spinner
+        android:id="@+id/spinner_completion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/completion_percentage"
+        android:textColor="@color/colorAccent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/completion_seekbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:progress="0"
+        android:max="100"
+        android:layout_marginTop="5dp"
+        android:progressTint="@color/colorAccent"
+        android:thumbTint="@color/colorAccent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:visibility="gone"/>
+
+</LinearLayout>
