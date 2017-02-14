@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import site.gbdev.walkandgoal.R;
+import site.gbdev.walkandgoal.ui.DatePickerFragment;
 
 /**
  * Created by gavin on 07/02/2017.
@@ -33,6 +36,7 @@ public class HistoryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -81,5 +85,21 @@ public class HistoryFragment extends Fragment {
                 dialogFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
             }
         });
+    }
+
+    public void onCreateOptionsMenu(
+            Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_statistics, menu);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_change_units:
+                // TODO Add change units code here
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

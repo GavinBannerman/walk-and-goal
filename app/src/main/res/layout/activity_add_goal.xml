@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/input_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/input_distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

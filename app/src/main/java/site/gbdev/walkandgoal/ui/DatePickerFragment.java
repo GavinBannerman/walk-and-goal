@@ -1,4 +1,4 @@
-package site.gbdev.walkandgoal.ui.history;
+package site.gbdev.walkandgoal.ui;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

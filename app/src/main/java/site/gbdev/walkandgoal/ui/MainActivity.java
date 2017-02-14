@@ -52,7 +52,8 @@ public class MainActivity extends AppCompatActivity
                     startActivity(intent);
 
                 } else if (currentFragment.getClass() == TestFragment.class){
-                    //TODO Launch add new test data activity
+                    Intent intent = new Intent(getBaseContext(), AddTestProgressActivity.class);
+                    startActivity(intent);
                 }
             }
         });

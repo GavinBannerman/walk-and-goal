@@ -2,6 +2,7 @@
     <string name="app_name">Walk and Goal</string>
 
     <string name="activity_add_progress">Add Activity</string>
+    <string name="activity_add_test_progress">Add Test Activity</string>
     <string name="activity_add_goal">Add New Goal</string>
     <string name="activity_preferences">Settings</string>
 
@@ -62,5 +63,7 @@
     <string name="statistics_min_goal">Minimum Goal Completion</string>
     <string name="statistics_avg_goal">Average Goal Completion</string>
     <string name="statistics_max_goal">Maximum Goal Completion</string>
+
+    <string name="test_choose_date">Choose a test date</string>
 
 </resources>

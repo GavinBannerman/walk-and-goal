@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,14 +19,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.ui.AddGoalActivity;
-import site.gbdev.walkandgoal.ui.history.DatePickerFragment;
+import site.gbdev.walkandgoal.ui.DatePickerFragment;
 
 /**
  * Created by gavin on 07/02/2017.
@@ -144,8 +142,7 @@ public class StatisticsFragment extends Fragment {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.menu_change_units:
-                Intent intent = new Intent(context, AddGoalActivity.class);
-                startActivity(intent);
+                // TODO Add change units code here
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
