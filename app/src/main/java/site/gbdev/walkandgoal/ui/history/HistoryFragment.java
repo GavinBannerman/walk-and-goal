@@ -47,6 +47,8 @@ public class HistoryFragment extends Fragment {
     Context context;
     RecyclerView recyclerView;
     List<Goal> goals = new ArrayList<>();
+    public int selectedFilter = 0;
+    int filterValue = 0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -145,7 +147,7 @@ public class HistoryFragment extends Fragment {
                 ft.addToBackStack(null);
 
                 // Create and show the dialog.
-                DialogFragment newFragment = CompletionDialogFragment.newInstance(2);
+                DialogFragment newFragment = CompletionDialogFragment.newInstance(selectedFilter, filterValue);
                 newFragment.show(ft, "dialog");
             }
         });
