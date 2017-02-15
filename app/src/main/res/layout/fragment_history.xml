@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/fragment_history_show"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textColor="@color/colorTextSecondary"/>
 
         <Spinner
@@ -68,23 +68,22 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="5dp"
-        android:background="?android:attr/listDivider"/>
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?android:attr/borderlessButtonStyle"
+        style="@style/ColoredButton"
         android:id="@+id/button_filter_completion"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:text="@string/history_filter_completion"
-        android:textSize="18sp"
-        android:textColor="@color/colorTextSecondary"
-        android:clickable="true"/>
+        android:textSize="14sp"
+        android:clickable="true"
+        android:textColor="@android:color/white"
+        android:background="@color/colorAccent"
+        android:padding="0dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"/>
 
     <View
         android:layout_width="match_parent"

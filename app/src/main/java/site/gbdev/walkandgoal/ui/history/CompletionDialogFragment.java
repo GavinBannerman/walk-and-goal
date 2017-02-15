@@ -73,15 +73,12 @@ public class CompletionDialogFragment extends DialogFragment {
         Button selectButton = (Button) getView().findViewById(R.id.dismiss_button);
 
         seekBar.setProgress(selectedValue);
-        Log.w("selectedVal:", String.valueOf(selectedValue));
         percentageTextView.setText(selectedValue + "%");
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
-                this.progress = progressValue;
                 selectedValue = progressValue;
                 percentageTextView.setText(progressValue + "%");
             }
