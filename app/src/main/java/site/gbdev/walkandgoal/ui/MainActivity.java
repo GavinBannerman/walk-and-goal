@@ -1,7 +1,9 @@
 package site.gbdev.walkandgoal.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -87,7 +89,14 @@ public class MainActivity extends AppCompatActivity
         Fragment newFragment = new HomeFragment();
         String tag = "home";
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean testMode = sharedPreferences.getBoolean("pref_test_mode", false);
+
         if (id == R.id.nav_home) {
+            if (testMode){
+                tag = "test";
+                newFragment = new TestFragment();
+            }
             fab.show();
         } else if (id == R.id.nav_history) {
             tag = "history";
@@ -97,10 +106,6 @@ public class MainActivity extends AppCompatActivity
             tag = "statistics";
             fab.hide();
             newFragment = new StatisticsFragment();
-        } else if (id == R.id.nav_test) {
-            tag = "test";
-            fab.show();
-            newFragment = new TestFragment();
         } else if (id == R.id.nav_settings) {
             Intent i = new Intent(this, PreferencesActivity.class);
             startActivity(i);

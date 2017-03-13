@@ -1,15 +1,14 @@
 package site.gbdev.walkandgoal.models;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Date;
-
-import site.gbdev.walkandgoal.util.Units;
 
 /**
  * Created by gavin on 07/02/2017.
  */
 
-public class Goal {
+public class Goal implements Serializable {
 
     private int id;
     private String name;
@@ -66,5 +65,9 @@ public class Goal {
     public String getDisplayDistance(){
         DecimalFormat format = new DecimalFormat("0.#");
         return (format.format(Units.convertFromSteps(distance, unit)) + " " + Units.getUNITS()[unit].getName());
+    }
+
+    public double getUnitDistance(){
+        return (Units.convertFromSteps(distance, unit));
     }
 }

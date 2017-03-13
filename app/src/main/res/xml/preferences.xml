@@ -13,6 +13,10 @@
             android:key="pref_edit_goals"
             android:title="@string/pref_edit_goals"
             android:defaultValue="true" />
+        <SwitchPreference
+            android:key="pref_test_mode"
+            android:title="Test Mode"
+            android:defaultValue="false" />
     </PreferenceCategory>
 
 </PreferenceScreen>

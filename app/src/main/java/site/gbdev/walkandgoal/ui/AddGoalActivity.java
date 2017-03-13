@@ -15,7 +15,7 @@ import java.util.Date;
 import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.db.FitnessDbWrapper;
 import site.gbdev.walkandgoal.models.Goal;
-import site.gbdev.walkandgoal.util.Units;
+import site.gbdev.walkandgoal.models.Units;
 
 /**
  * Created by gavin on 12/02/2017.
@@ -27,6 +27,7 @@ public class AddGoalActivity extends AppCompatActivity {
     Spinner units;
     Button addButton;
     Goal goal;
+    boolean edit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,31 +39,60 @@ public class AddGoalActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         units = (Spinner) findViewById(R.id.spinner_units);
-// Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.units_array, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
         units.setAdapter(adapter);
 
         name = (TextInputEditText) findViewById(R.id.input_name);
         distance = (TextInputEditText) findViewById(R.id.input_distance);
         addButton = (Button) findViewById(R.id.button_add);
 
+        if (getIntent().hasExtra("goal")){
+            edit = true;
+            setTitle("Edit Goal");
+            addButton.setText("Save");
+            goal = (Goal) getIntent().getSerializableExtra("goal");
+            name.setText(goal.getName());
+            distance.setText(String.valueOf(Units.convertFromSteps(goal.getDistance(), goal.getUnit())));
+            units.setSelection(goal.getUnit());
+        }
+
         final Activity activity = this;
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        if (edit){
 
-                int unitID = Units.getIdFromString(units.getSelectedItem().toString());
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                double distanceValue = Units.convertToSteps(Double.valueOf(distance.getText().toString()), unitID);
-                goal = new Goal(-1, name.getText().toString(), distanceValue, unitID, new Date());
-                FitnessDbWrapper.addAGoal(goal, activity);
-                finish();
-            }
-        });
+                    int unitID = Units.getIdFromString(units.getSelectedItem().toString());
+
+                    double distanceValue = Units.convertToSteps(Double.valueOf(distance.getText().toString()), unitID);
+
+                    goal.setName(name.getText().toString());
+                    goal.setDistance(distanceValue);
+                    goal.setUnit(unitID);
+
+                    FitnessDbWrapper.updateGoal(goal, activity);
+                    finish();
+                }
+            });
+
+        } else {
+
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int unitID = Units.getIdFromString(units.getSelectedItem().toString());
+
+                    double distanceValue = Units.convertToSteps(Double.valueOf(distance.getText().toString()), unitID);
+                    goal = new Goal(-1, name.getText().toString(), distanceValue, unitID, new Date());
+                    FitnessDbWrapper.addAGoal(goal, activity);
+                    finish();
+                }
+            });
+        }
     }
 }

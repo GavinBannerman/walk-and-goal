@@ -1,4 +1,4 @@
-package site.gbdev.walkandgoal.util;
+package site.gbdev.walkandgoal.models;
 
 import android.util.Log;
 
@@ -60,8 +60,6 @@ public class Units {
 
     public static int getIdFromString(String unit){
         int index = -1;
-
-        Log.d("Units", unit);
 
         for (int i = 0; i < UNITS.length; i++){
             if (UNITS[i].getName().equals(unit)){

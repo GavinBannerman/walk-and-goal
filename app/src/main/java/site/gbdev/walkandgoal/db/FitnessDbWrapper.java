@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import site.gbdev.walkandgoal.models.Goal;
+import site.gbdev.walkandgoal.models.Units;
 
 /**
  * Created by gavin on 12/03/2017.
@@ -33,6 +34,50 @@ public class FitnessDbWrapper {
         return id;
     }
 
+    public static double getTotalActivityForDate(Units.Unit unit, Date date, Context context){
+
+        if (date == null){
+            date = new Date();
+        }
+
+        SQLiteDatabase db = getWritableDatabase(context);
+        String[] selectionArgs = {String.valueOf(date.getTime())};
+
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM(" + FitnessContract.ActivityEntry.COLUMN_NAME_DISTANCE + ") AS 'total' " +
+                        "FROM " + FitnessContract.ActivityEntry.TABLE_NAME +
+                        " WHERE DATE(" + FitnessContract.ActivityEntry.COLUMN_NAME_DATE + ") = DATE(?);",
+                selectionArgs                            // The values for the WHERE clause
+        );
+
+        double total = -1;
+        while(cursor.moveToNext()) {
+            total = cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+        }
+
+        cursor.close();
+        db.close();
+        return (total * unit.getConversion());
+    }
+
+    public static int addActivity(double distance, Date date, Context context){
+
+        if (date == null){
+            date = new Date();
+        }
+
+        SQLiteDatabase db = getWritableDatabase(context);
+
+        ContentValues values = new ContentValues();
+        values.put(FitnessContract.ActivityEntry.COLUMN_NAME_DISTANCE, distance);
+        values.put(FitnessContract.ActivityEntry.COLUMN_NAME_DATE, date.getTime());
+
+        // Insert the new row, returning the primary key value of the new row
+        int id = (int) db.insert(FitnessContract.ActivityEntry.TABLE_NAME, null, values);
+        db.close();
+        return id;
+    }
+
     public static int setActive(Goal goal, Context context){
 
         SQLiteDatabase db = getWritableDatabase(context);
@@ -41,9 +86,32 @@ public class FitnessDbWrapper {
 
         ContentValues values = new ContentValues();
         values.put(FitnessContract.GoalEntry.COLUMN_NAME_ACTIVE, 1);
+        values.put(FitnessContract.GoalEntry.COLUMN_NAME_DATE, new Date().getTime());
 
         String selection = FitnessContract.GoalEntry.COLUMN_NAME_ID + " = ?";
         String[] selectionArgs = { String.valueOf(goal.getId())};
+
+        int count = db.update(
+                FitnessContract.GoalEntry.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs);
+
+        db.close();
+        return count;
+    }
+
+    public static int updateGoal(Goal goal, Context context){
+
+        SQLiteDatabase db = getWritableDatabase(context);
+
+        ContentValues values = new ContentValues();
+        values.put(FitnessContract.GoalEntry.COLUMN_NAME_NAME, goal.getName());
+        values.put(FitnessContract.GoalEntry.COLUMN_NAME_DISTANCE, goal.getDistance());
+        values.put(FitnessContract.GoalEntry.COLUMN_NAME_UNIT, goal.getUnit());
+
+        String selection = FitnessContract.GoalEntry.COLUMN_NAME_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(goal.getId()) };
 
         int count = db.update(
                 FitnessContract.GoalEntry.TABLE_NAME,
@@ -95,6 +163,16 @@ public class FitnessDbWrapper {
         cursor.close();
         db.close();
         return goal;
+    }
+
+    public static void deleteGoal(Goal goal, Context context){
+
+        SQLiteDatabase db = getWritableDatabase(context);
+
+        String selection = FitnessContract.GoalEntry.COLUMN_NAME_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(goal.getId())};
+        db.delete(FitnessContract.GoalEntry.TABLE_NAME, selection, selectionArgs);
+        db.close();
     }
 
     public static List<Goal> getAllInactiveGoals(Context context) {
