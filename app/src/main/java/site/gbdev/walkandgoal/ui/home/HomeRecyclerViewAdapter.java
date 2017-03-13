@@ -3,6 +3,8 @@ package site.gbdev.walkandgoal.ui.home;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
@@ -90,9 +92,15 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                                 homeFragment.updateRecyclerView();
                                 break;
                             case R.id.menu_item_home_edit:
-                                Intent intent = new Intent(context, AddGoalActivity.class);
-                                intent.putExtra("goal", goals.get(id));
-                                context.startActivity(intent);
+
+                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                                boolean editGoals = sharedPreferences.getBoolean("pref_edit_goals", true);
+
+                                if (editGoals) {
+                                    Intent intent = new Intent(context, AddGoalActivity.class);
+                                    intent.putExtra("goal", goals.get(id));
+                                    context.startActivity(intent);
+                                }
                                 break;
                             case R.id.menu_item_home_delete:
                                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
