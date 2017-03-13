@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 
 public class FitnessContract {
 
-    public static final  int    DATABASE_VERSION = 1;
+    public static final  int    DATABASE_VERSION = 2;
     public static final  String DATABASE_NAME = "fitness.db";
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String TEXT_TYPE = " TEXT";
@@ -25,6 +25,7 @@ public class FitnessContract {
         public static final String COLUMN_NAME_DISTANCE = "distance";
         public static final String COLUMN_NAME_UNIT = "unit";
         public static final String COLUMN_NAME_DATE = "date";
+        public static final String COLUMN_NAME_ACTIVE = "active";
 
         public static final String CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + " (" +
@@ -32,6 +33,7 @@ public class FitnessContract {
                 COLUMN_NAME_NAME + TEXT_TYPE + COMMA_SEP +
                 COLUMN_NAME_DISTANCE + REAL_TYPE + COMMA_SEP +
                 COLUMN_NAME_UNIT + INTEGER_TYPE + COMMA_SEP +
+                COLUMN_NAME_ACTIVE + INTEGER_TYPE + " DEFAULT 0" + COMMA_SEP +
                 COLUMN_NAME_DATE + DATE_TYPE + " )";
         public static final String DELETE_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
     }

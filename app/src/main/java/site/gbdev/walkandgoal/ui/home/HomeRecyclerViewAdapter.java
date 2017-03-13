@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import site.gbdev.walkandgoal.R;
+import site.gbdev.walkandgoal.db.FitnessDbWrapper;
 import site.gbdev.walkandgoal.models.Goal;
 
 /**
@@ -25,10 +26,12 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     List<Goal> goals;
     Context context;
+    HomeFragment homeFragment;
 
-    HomeRecyclerViewAdapter(List<Goal> goals, Context context){
+    HomeRecyclerViewAdapter(List<Goal> goals, Context context, HomeFragment homeFragment){
         this.goals = goals;
         this.context = context;
+        this.homeFragment = homeFragment;
     }
 
     public static class GoalViewHolder extends RecyclerView.ViewHolder {
@@ -75,9 +78,12 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+
+                        int id = goalViewHolder.getAdapterPosition();
                         switch (item.getItemId()) {
                             case R.id.menu_item_home_active:
-                                //handle menu1 click
+                                FitnessDbWrapper.setActive(goals.get(id), context);
+                                homeFragment.updateRecyclerView();
                                 break;
                             case R.id.menu_item_home_edit:
                                 //handle menu2 click

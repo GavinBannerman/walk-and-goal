@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,12 @@ public class HomeFragment extends Fragment {
     Context context;
     List<Goal> goals = new ArrayList<>();
     RecyclerView recyclerView;
+
+    FloatingActionButton fab;
+
+    Goal activeGoal;
+
+    TextView activeGoalName, activeGoalDistance, currentDistance, currentProgressText;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +62,8 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        goals = FitnessDbWrapper.getAllGoals(context);
+        activeGoalName = (TextView) getView().findViewById(R.id.home_current_goal_name);
+        activeGoalDistance = (TextView) getView().findViewById(R.id.home_current_goal_distance);
 
         recyclerView = (RecyclerView) getView().findViewById(R.id.home_recycler);
         recyclerView.setHasFixedSize(true);
@@ -63,11 +71,9 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(goals, context);
-        recyclerView.setAdapter(adapter);
-        registerForContextMenu(recyclerView);
+        updateRecyclerView();
 
-        final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
@@ -88,6 +94,7 @@ public class HomeFragment extends Fragment {
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
+
 
     }
 
@@ -111,5 +118,26 @@ public class HomeFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void updateRecyclerView(){
+
+        goals = FitnessDbWrapper.getAllInactiveGoals(context);
+
+        activeGoal = FitnessDbWrapper.getActiveGoal(context);
+
+        if (activeGoal != null){
+            activeGoalName.setText(activeGoal.getName());
+            activeGoalDistance.setText(activeGoal.getDisplayDistance());
+        } else {
+            activeGoalName.setText("");
+            activeGoalDistance.setText("");
+        }
+
+        HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(goals, context, this);
+        recyclerView.setAdapter(adapter);
+        registerForContextMenu(recyclerView);
+
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 }

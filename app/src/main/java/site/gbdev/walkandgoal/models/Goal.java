@@ -11,13 +11,15 @@ import site.gbdev.walkandgoal.util.Units;
 
 public class Goal {
 
+    private int id;
     private String name;
     private double distance;
     private int unit;
     private boolean active;
     private Date date;
 
-    public Goal(String name, double distance, int unit, Date date, boolean active) {
+    public Goal(int id, String name, double distance, int unit, Date date, boolean active) {
+        this.id = id;
         this.active = active;
         this.distance = distance;
         this.name = name;
@@ -25,7 +27,8 @@ public class Goal {
         this.date = date;
     }
 
-    public Goal(String name, double distance, int unit, Date date) {
+    public Goal(int id, String name, double distance, int unit, Date date) {
+        this.id = id;
         this.active = false;
         this.distance = distance;
         this.name = name;
@@ -34,6 +37,7 @@ public class Goal {
     }
 
     public Goal(Goal otherGoal) {
+        this.id = otherGoal.getId();
         this.active = otherGoal.isActive();
         this.distance = otherGoal.getDistance();
         this.name = otherGoal.getName();
@@ -55,6 +59,9 @@ public class Goal {
 
     public Date getDate() {return date;}
     public void setDate(Date date) {this.date = date;}
+
+    public int getId() {return id;}
+    public void setId(int id) {this.id = id;}
 
     public String getDisplayDistance(){
         DecimalFormat format = new DecimalFormat("0.#");

@@ -59,7 +59,7 @@ public class AddGoalActivity extends AppCompatActivity {
                 int unitID = Units.getIdFromString(units.getSelectedItem().toString());
 
                 double distanceValue = Units.convertToSteps(Double.valueOf(distance.getText().toString()), unitID);
-                goal = new Goal(name.getText().toString(), distanceValue, unitID, new Date());
+                goal = new Goal(-1, name.getText().toString(), distanceValue, unitID, new Date());
                 FitnessDbWrapper.addAGoal(goal, activity);
                 finish();
             }
