@@ -59,6 +59,7 @@
                     android:id="@+id/input_distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
                     android:hint="@string/form_label_distance" />
             </android.support.design.widget.TextInputLayout>
 
@@ -71,6 +72,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/button_add"
                 android:theme="@style/ColoredButton"
                 android:layout_margin="20dp"
                 android:text="@string/button_add"

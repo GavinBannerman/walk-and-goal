@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import site.gbdev.walkandgoal.R;
+import site.gbdev.walkandgoal.db.FitnessDbWrapper;
 import site.gbdev.walkandgoal.models.Goal;
 import site.gbdev.walkandgoal.ui.AddGoalActivity;
 import site.gbdev.walkandgoal.ui.AddProgressActivity;
@@ -37,14 +38,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getActivity().getApplicationContext();
+        context = getActivity();
 
-        goals.add(new Goal("Also A Goal", 10, "Miles"));
-        goals.add(new Goal("Walk The Dog", 800, "Metres"));
-        goals.add(new Goal("Just Another Goal", 300, "Steps"));
-        goals.add(new Goal("Goal Number 4", 100, "Yards"));
-        goals.add(new Goal("More Goals", 25, "Miles"));
-        goals.add(new Goal("This is a really long name for a goal", 10, "Steps"));
         setHasOptionsMenu(true);
     }
 
@@ -59,6 +54,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        goals = FitnessDbWrapper.getAllGoals(context);
 
         recyclerView = (RecyclerView) getView().findViewById(R.id.home_recycler);
         recyclerView.setHasFixedSize(true);

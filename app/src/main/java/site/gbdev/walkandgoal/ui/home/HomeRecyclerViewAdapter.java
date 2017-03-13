@@ -64,8 +64,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
     @Override
     public void onBindViewHolder(final GoalViewHolder goalViewHolder, int i) {
         goalViewHolder.goalName.setText(goals.get(i).getName());
-        String displayDistance = goals.get(i).getDistance() + " " + goals.get(i).getUnit();
-        goalViewHolder.goalDistance.setText(displayDistance);
+        goalViewHolder.goalDistance.setText(goals.get(i).getDisplayDistance());
         goalViewHolder.goalOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

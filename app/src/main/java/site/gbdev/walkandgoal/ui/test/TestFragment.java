@@ -44,12 +44,6 @@ public class TestFragment extends Fragment {
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
 
-        goals.add(new Goal("Also A Goal", 10, "Miles"));
-        goals.add(new Goal("Walk The Dog", 800, "Metres"));
-        goals.add(new Goal("Just Another Goal", 300, "Steps"));
-        goals.add(new Goal("Goal Number 4", 100, "Yards"));
-        goals.add(new Goal("More Goals", 25, "Miles"));
-        goals.add(new Goal("This is a really long name for a goal", 10, "Steps"));
         setHasOptionsMenu(true);
     }
 
