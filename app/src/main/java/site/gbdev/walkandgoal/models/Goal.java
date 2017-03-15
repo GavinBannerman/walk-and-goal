@@ -70,4 +70,13 @@ public class Goal implements Serializable {
     public double getUnitDistance(){
         return (Units.convertFromSteps(distance, unit));
     }
+
+    public String getDisplayDistanceInUnit(Units.Unit desiredUnit){
+        DecimalFormat format = new DecimalFormat("0.#");
+        return format.format(Units.convertFromSteps(distance, Units.getIdFromString(desiredUnit.getName())) + " " + Units.getUNITS()[unit].getName());
+    }
+
+    public double getDistanceInUnits(Units.Unit desiredUnit){
+        return Units.convertFromSteps(distance, Units.getIdFromString(desiredUnit.getName()));
+    }
 }
