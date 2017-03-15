@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import site.gbdev.walkandgoal.R;
@@ -28,12 +29,13 @@ import site.gbdev.walkandgoal.models.Goal;
 import site.gbdev.walkandgoal.models.Units;
 import site.gbdev.walkandgoal.ui.AddGoalActivity;
 import site.gbdev.walkandgoal.ui.AddProgressActivity;
+import site.gbdev.walkandgoal.ui.RecyclerViewRefresher;
 
 /**
  * Created by gavin on 07/02/2017.
  */
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements RecyclerViewRefresher {
 
     Context context;
     List<Goal> goals = new ArrayList<>();
@@ -131,22 +133,22 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    @Override
     public void updateRecyclerView(){
 
         goals = FitnessDbWrapper.getAllInactiveGoals(context);
 
         activeGoal = FitnessDbWrapper.getActiveGoal(context);
 
-        activityToday = FitnessDbWrapper.getTotalActivityForDate(Units.getUNITS()[activeGoal.getUnit()], null, context);
-        DecimalFormat format = new DecimalFormat("0.#");
-        currentDistance.setText(format.format(activityToday) + " " + Units.getUNITS()[activeGoal.getUnit()].getName());
-        currentProgress = (int) (activityToday/activeGoal.getUnitDistance()*100);
-        currentProgressText.setText(currentProgress + "%");
-        progressBar.setProgress(currentProgress);
-
         if (activeGoal != null){
             activeGoalName.setText(activeGoal.getName());
             activeGoalDistance.setText(activeGoal.getDisplayDistance());
+            activityToday = FitnessDbWrapper.getTotalActivityForDate(Units.getUNITS()[activeGoal.getUnit()], null, context);
+            DecimalFormat format = new DecimalFormat("0.#");
+            currentDistance.setText(format.format(activityToday) + " " + Units.getUNITS()[activeGoal.getUnit()].getName());
+            currentProgress = (int) (activityToday/activeGoal.getUnitDistance()*100);
+            currentProgressText.setText(currentProgress + "%");
+            progressBar.setProgress(currentProgress);
         } else {
             activeGoalName.setText("");
             activeGoalDistance.setText("");
@@ -165,4 +167,7 @@ public class HomeFragment extends Fragment {
 
         updateRecyclerView();
     }
+
+    @Override
+    public Date getDate(){ return null;}
 }

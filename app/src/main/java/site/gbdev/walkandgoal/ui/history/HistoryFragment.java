@@ -30,9 +30,11 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import site.gbdev.walkandgoal.R;
+import site.gbdev.walkandgoal.db.FitnessDbWrapper;
 import site.gbdev.walkandgoal.models.Goal;
 import site.gbdev.walkandgoal.ui.DatePickerFragment;
 
@@ -49,6 +51,7 @@ public class HistoryFragment extends Fragment {
     List<Goal> goals = new ArrayList<>();
     public int selectedFilter = 0;
     int filterValue = 0;
+    Date fromDate = null, toDate = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,9 +83,7 @@ public class HistoryFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        HistoryRecyclerViewAdapter adapter = new HistoryRecyclerViewAdapter(goals, context);
-        recyclerView.setAdapter(adapter);
-        registerForContextMenu(recyclerView);
+        updateRecyclerView();
 
         final DatePickerDialog.OnDateSetListener fromDateListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -91,9 +92,11 @@ public class HistoryFragment extends Fragment {
                 Button datePickerButton = (Button) getView().findViewById(R.id.button_from_date);
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day);
+                fromDate = calendar.getTime();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
                 String formattedDate = simpleDateFormat.format(calendar.getTime());
                 datePickerButton.setText(formattedDate);
+                updateRecyclerView();
             }
         };
 
@@ -104,9 +107,11 @@ public class HistoryFragment extends Fragment {
                 Button datePickerButton = (Button) getView().findViewById(R.id.button_to_date);
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day);
+                toDate = calendar.getTime();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
                 String formattedDate = simpleDateFormat.format(calendar.getTime());
                 datePickerButton.setText(formattedDate);
+                updateRecyclerView();
             }
         };
 
@@ -157,13 +162,24 @@ public class HistoryFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if (position == 0) {
                     fromToDateSection.setVisibility(View.GONE);
+                    fromDate = null;
+                    toDate = null;
                 } else if (position == 1) {
                     fromToDateSection.setVisibility(View.GONE);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.add(Calendar.DATE, -7);
+                    fromDate = calendar.getTime();
+                    toDate = null;
                 } else if (position == 2) {
                     fromToDateSection.setVisibility(View.GONE);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.add(Calendar.DATE, -28);
+                    fromDate = calendar.getTime();
+                    toDate = null;
                 } else if (position == 3) {
                     fromToDateSection.setVisibility(View.VISIBLE);
                 }
+                updateRecyclerView();
             }
 
             @Override
@@ -188,6 +204,14 @@ public class HistoryFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void updateRecyclerView(){
+
+        goals = FitnessDbWrapper.getAllGoals(fromDate, toDate, context);
+
+        HistoryRecyclerViewAdapter adapter = new HistoryRecyclerViewAdapter(goals, context);
+        recyclerView.setAdapter(adapter);
     }
 
 }

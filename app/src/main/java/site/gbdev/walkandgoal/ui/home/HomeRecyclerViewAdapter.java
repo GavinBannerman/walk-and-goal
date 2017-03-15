@@ -23,6 +23,7 @@ import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.db.FitnessDbWrapper;
 import site.gbdev.walkandgoal.models.Goal;
 import site.gbdev.walkandgoal.ui.AddGoalActivity;
+import site.gbdev.walkandgoal.ui.RecyclerViewRefresher;
 
 /**
  * Created by gavin on 07/02/2017.
@@ -32,9 +33,9 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     List<Goal> goals;
     Context context;
-    HomeFragment homeFragment;
+    RecyclerViewRefresher homeFragment;
 
-    HomeRecyclerViewAdapter(List<Goal> goals, Context context, HomeFragment homeFragment){
+    public HomeRecyclerViewAdapter(List<Goal> goals, Context context, RecyclerViewRefresher homeFragment){
         this.goals = goals;
         this.context = context;
         this.homeFragment = homeFragment;
@@ -88,7 +89,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                         int id = goalViewHolder.getAdapterPosition();
                         switch (item.getItemId()) {
                             case R.id.menu_item_home_active:
-                                FitnessDbWrapper.setActive(goals.get(id), context);
+                                FitnessDbWrapper.setActive(goals.get(id), homeFragment.getDate(), context);
                                 homeFragment.updateRecyclerView();
                                 break;
                             case R.id.menu_item_home_edit:

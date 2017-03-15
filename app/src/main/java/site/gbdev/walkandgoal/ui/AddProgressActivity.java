@@ -1,6 +1,8 @@
 package site.gbdev.walkandgoal.ui;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+
+import java.util.Date;
 
 import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.db.FitnessDbWrapper;
@@ -19,6 +23,7 @@ public class AddProgressActivity extends AppCompatActivity {
     TextInputEditText distance;
     Spinner units;
     Button addButton;
+    Date date = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,13 @@ public class AddProgressActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean editGoals = sharedPreferences.getBoolean("pref_test_mode", false);
+
+        if (getIntent().hasExtra("date") && editGoals){
+            date = (Date) getIntent().getSerializableExtra("date");
+        }
 
         units = (Spinner) findViewById(R.id.spinner_units);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -47,7 +59,7 @@ public class AddProgressActivity extends AppCompatActivity {
                 int unitID = Units.getIdFromString(units.getSelectedItem().toString());
 
                 double distanceValue = Units.convertToSteps(Double.valueOf(distance.getText().toString()), unitID);
-                FitnessDbWrapper.addActivity(distanceValue, null, activity);
+                FitnessDbWrapper.addActivity(distanceValue, date, activity);
                 finish();
             }
         });

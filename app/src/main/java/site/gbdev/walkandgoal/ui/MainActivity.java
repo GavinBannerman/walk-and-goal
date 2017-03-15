@@ -15,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.util.Date;
+
 import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.ui.history.HistoryFragment;
 import site.gbdev.walkandgoal.ui.home.HomeFragment;
@@ -46,7 +48,10 @@ public class MainActivity extends AppCompatActivity
                     startActivity(intent);
 
                 } else if (currentFragment.getClass() == TestFragment.class){
-                    Intent intent = new Intent(getBaseContext(), AddTestProgressActivity.class);
+                    Intent intent = new Intent(getBaseContext(), AddProgressActivity.class);
+                    RecyclerViewRefresher recyclerViewRefresher = (RecyclerViewRefresher) currentFragment;
+                    Date testDate = recyclerViewRefresher.getDate();
+                    intent.putExtra("date", testDate);
                     startActivity(intent);
                 }
             }
@@ -63,11 +68,21 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        currentFragment = new HomeFragment();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean testMode = sharedPreferences.getBoolean("pref_test_mode", false);
+        String tag = "";
+
+        if (testMode){
+            currentFragment = new TestFragment();
+            tag = "test";
+        } else {
+            currentFragment = new HomeFragment();
+            tag = "home";
+        }
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_main, currentFragment, "home")
+                .replace(R.id.content_main, currentFragment, tag)
                 .commit();
     }
 
