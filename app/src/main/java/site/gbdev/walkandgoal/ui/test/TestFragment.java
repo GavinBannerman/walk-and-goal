@@ -10,7 +10,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -170,7 +169,7 @@ public class TestFragment extends Fragment implements RecyclerViewRefresher {
 
     public void updateRecyclerView(){
 
-        goals = FitnessDbWrapper.getAllInactiveGoals(context);
+        goals = FitnessDbWrapper.getAllInactiveUnfinishedGoals(context);
 
         activeGoal = FitnessDbWrapper.getActiveGoal(context);
 

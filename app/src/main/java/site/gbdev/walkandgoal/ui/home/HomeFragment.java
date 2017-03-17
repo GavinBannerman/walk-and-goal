@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,7 +27,6 @@ import site.gbdev.walkandgoal.db.FitnessDbWrapper;
 import site.gbdev.walkandgoal.models.Goal;
 import site.gbdev.walkandgoal.models.Units;
 import site.gbdev.walkandgoal.ui.AddGoalActivity;
-import site.gbdev.walkandgoal.ui.AddProgressActivity;
 import site.gbdev.walkandgoal.ui.RecyclerViewRefresher;
 
 /**
@@ -136,7 +134,7 @@ public class HomeFragment extends Fragment implements RecyclerViewRefresher {
     @Override
     public void updateRecyclerView(){
 
-        goals = FitnessDbWrapper.getAllInactiveGoals(context);
+        goals = FitnessDbWrapper.getAllInactiveUnfinishedGoals(context);
 
         activeGoal = FitnessDbWrapper.getActiveGoal(context);
 

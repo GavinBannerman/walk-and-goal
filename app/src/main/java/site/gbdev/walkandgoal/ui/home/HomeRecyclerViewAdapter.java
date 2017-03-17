@@ -87,14 +87,21 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                     public boolean onMenuItemClick(MenuItem item) {
 
                         int id = goalViewHolder.getAdapterPosition();
+                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                         switch (item.getItemId()) {
                             case R.id.menu_item_home_active:
-                                FitnessDbWrapper.setActive(goals.get(id), homeFragment.getDate(), context);
+
+                                boolean testMode = sharedPreferences.getBoolean("pref_test_mode", false);
+
+                                if (testMode) {
+                                    FitnessDbWrapper.setFinished(goals.get(id), homeFragment.getDate(), context);
+                                } else {
+                                    FitnessDbWrapper.setActive(goals.get(id), homeFragment.getDate(), context);
+                                }
                                 homeFragment.updateRecyclerView();
                                 break;
                             case R.id.menu_item_home_edit:
 
-                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
                                 boolean editGoals = sharedPreferences.getBoolean("pref_edit_goals", true);
 
                                 if (editGoals) {

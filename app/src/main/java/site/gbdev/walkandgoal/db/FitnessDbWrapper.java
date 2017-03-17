@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,19 +54,42 @@ public class FitnessDbWrapper {
         );
 
         double total = 0;
-        int rows = 0;
 
         while(cursor.moveToNext()) {
             total = cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
-            rows++;
         }
-
-        Log.d("ROWS", "" + rows);
-        Log.d("TOTAL", ""+ total * unit.getConversion());
 
         cursor.close();
         db.close();
         return (total * unit.getConversion());
+    }
+
+    public static List<Double> getActivityForHistory(Units.Unit unit, Context context, List<Goal> goals){
+
+        SQLiteDatabase db = getReadableDatabase(context);
+        List<Double> progress = new ArrayList<>();
+
+        for (Goal goal : goals) {
+            String[] selectionArgs = {String.valueOf(getStartOfDay(goal.getDate()).getTime()), String.valueOf(getEndOfDay(goal.getDate()).getTime())};
+            Cursor cursor = db.rawQuery(
+                    "SELECT SUM(" + FitnessContract.ActivityEntry.COLUMN_NAME_DISTANCE + ") AS 'total' " +
+                            "FROM " + FitnessContract.ActivityEntry.TABLE_NAME +
+                            " WHERE " + FitnessContract.ActivityEntry.COLUMN_NAME_DATE + " >= ? AND "
+                            + FitnessContract.ActivityEntry.COLUMN_NAME_DATE + " < ?;",
+                    selectionArgs                            // The values for the WHERE clause
+            );
+
+            double total = 0;
+
+            while (cursor.moveToNext()) {
+                total = cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+            }
+
+            cursor.close();
+            progress.add(total * unit.getConversion());
+        }
+        db.close();
+        return progress;
     }
 
     public static int addActivity(double distance, Date date, Context context){
@@ -99,6 +123,34 @@ public class FitnessDbWrapper {
         ContentValues values = new ContentValues();
         values.put(FitnessContract.GoalEntry.COLUMN_NAME_ACTIVE, 1);
         values.put(FitnessContract.GoalEntry.COLUMN_NAME_DATE, date.getTime());
+
+        String selection = FitnessContract.GoalEntry.COLUMN_NAME_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(goal.getId())};
+
+        int count = db.update(
+                FitnessContract.GoalEntry.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs);
+
+        db.close();
+        return count;
+    }
+
+    public static int setFinished(Goal goal, Date date, Context context){
+
+        if (date == null){
+            date = new Date();
+        }
+
+        SQLiteDatabase db = getWritableDatabase(context);
+
+        db.execSQL("UPDATE " + FitnessContract.GoalEntry.TABLE_NAME + " SET " + FitnessContract.GoalEntry.COLUMN_NAME_ACTIVE + " = 0");
+
+        ContentValues values = new ContentValues();
+        values.put(FitnessContract.GoalEntry.COLUMN_NAME_ACTIVE, 0);
+        values.put(FitnessContract.GoalEntry.COLUMN_NAME_DATE, date.getTime());
+        values.put(FitnessContract.GoalEntry.COLUMN_NAME_FINISHED, 1);
 
         String selection = FitnessContract.GoalEntry.COLUMN_NAME_ID + " = ?";
         String[] selectionArgs = { String.valueOf(goal.getId())};
@@ -187,7 +239,7 @@ public class FitnessDbWrapper {
         db.close();
     }
 
-    public static List<Goal> getAllInactiveGoals(Context context) {
+    public static List<Goal> getAllInactiveUnfinishedGoals(Context context) {
         SQLiteDatabase db = getReadableDatabase(context);
 
         String[] projection = {
@@ -198,8 +250,8 @@ public class FitnessDbWrapper {
                 FitnessContract.GoalEntry.COLUMN_NAME_DATE
         };
 
-        String selection = FitnessContract.GoalEntry.COLUMN_NAME_ACTIVE + " = ?";
-        String[] selectionArgs = {String.valueOf(0)};
+        String selection = FitnessContract.GoalEntry.COLUMN_NAME_ACTIVE + " = ? AND " + FitnessContract.GoalEntry.COLUMN_NAME_FINISHED + " = ?";
+        String[] selectionArgs = {String.valueOf(0), String.valueOf(0)};
 
         String sortOrder =
                 FitnessContract.GoalEntry.COLUMN_NAME_NAME + " DESC";
@@ -220,7 +272,61 @@ public class FitnessDbWrapper {
             String goalName = cursor.getString(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_NAME));
             double goalDistance = cursor.getDouble(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_DISTANCE));
             int goalUnit = cursor.getInt(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_UNIT));
-            Date goalDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_DATE))*1000);
+            Date goalDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_DATE)));
+            goals.add(new Goal(goalId, goalName, goalDistance, goalUnit, goalDate));
+        }
+        cursor.close();
+
+        db.close();
+        return goals;
+    }
+
+    public static List<Goal> getAllFinishedGoals(Units.Unit unit, Date fromDate, Date toDate, Context context) {
+        SQLiteDatabase db = getReadableDatabase(context);
+
+        String[] projection = {
+                FitnessContract.GoalEntry.COLUMN_NAME_ID,
+                FitnessContract.GoalEntry.COLUMN_NAME_NAME,
+                FitnessContract.GoalEntry.COLUMN_NAME_DISTANCE,
+                FitnessContract.GoalEntry.COLUMN_NAME_UNIT,
+                FitnessContract.GoalEntry.COLUMN_NAME_DATE
+        };
+
+        String selection = null;
+        String[] selectionArgs = null;
+
+        if (fromDate == null && toDate == null) {
+
+            selection = FitnessContract.GoalEntry.COLUMN_NAME_FINISHED + " = ?";
+            selectionArgs = new String[]{String.valueOf(1)};
+        } else if (toDate == null){
+            selection = FitnessContract.GoalEntry.COLUMN_NAME_DATE + " > ?" + " AND " + FitnessContract.GoalEntry.COLUMN_NAME_FINISHED + " = ?";
+            selectionArgs = new String[]{String.valueOf(fromDate.getTime()), String.valueOf(1)};
+        } else {
+            selection = "(" + FitnessContract.GoalEntry.COLUMN_NAME_DATE + " BETWEEN ? AND ? ) AND " + FitnessContract.GoalEntry.COLUMN_NAME_FINISHED + " = ?";
+            selectionArgs = new String[]{String.valueOf(fromDate.getTime()), String.valueOf(toDate.getTime()), String.valueOf(1)};
+        }
+
+        String sortOrder =
+                FitnessContract.GoalEntry.COLUMN_NAME_DATE + " DESC";
+
+        Cursor cursor = db.query(
+                FitnessContract.GoalEntry.TABLE_NAME,                     // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+
+        List<Goal> goals = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            int goalId = cursor.getInt(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_ID));
+            String goalName = cursor.getString(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_NAME));
+            double goalDistance = cursor.getDouble(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_DISTANCE));
+            int goalUnit = Units.getIdFromString(unit.getName());
+            Date goalDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_DATE)));
             goals.add(new Goal(goalId, goalName, goalDistance, goalUnit, goalDate));
         }
         cursor.close();
@@ -274,7 +380,7 @@ public class FitnessDbWrapper {
             String goalName = cursor.getString(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_NAME));
             double goalDistance = cursor.getDouble(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_DISTANCE));
             int goalUnit = cursor.getInt(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_UNIT));
-            Date goalDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_DATE))*1000);
+            Date goalDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(FitnessContract.GoalEntry.COLUMN_NAME_DATE)));
             goals.add(new Goal(goalId, goalName, goalDistance, goalUnit, goalDate));
         }
         cursor.close();

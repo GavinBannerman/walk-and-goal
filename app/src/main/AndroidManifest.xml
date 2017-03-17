@@ -33,11 +33,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName="site.gbdev.walkandgoal.ui.MainActivity">
         </activity>
-        <activity android:name=".ui.AddTestProgressActivity"
-            android:label="@string/activity_add_test_progress"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName="site.gbdev.walkandgoal.ui.MainActivity">
-        </activity>
     </application>
 
 </manifest>

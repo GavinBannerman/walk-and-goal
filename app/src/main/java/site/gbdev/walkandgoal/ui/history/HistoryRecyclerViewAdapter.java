@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -75,11 +76,15 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
         goalViewHolder.goalName.setText(goals.get(i).getName());
         String displayDistance = "/" + goals.get(i).getDisplayDistance();
         goalViewHolder.goalDistance.setText(displayDistance);
-        long formattableTime = goals.get(i).getDate().getTime()/1000;
+        long formattableTime = goals.get(i).getDate().getTime();
         SimpleDateFormat format1 = new SimpleDateFormat("dd");
         SimpleDateFormat format2 = new SimpleDateFormat("MMM yy");
         goalViewHolder.goalDay.setText(format1.format(formattableTime));
         goalViewHolder.goalMonth.setText(format2.format(formattableTime).toUpperCase());
+        DecimalFormat format = new DecimalFormat("0.#");
+        goalViewHolder.goalCompleted.setText(String.valueOf(format.format(progress.get(i))));
+        int currentProgress = (int) (progress.get(i)/goals.get(i).getUnitDistance()*100);
+        goalViewHolder.goalPercentage.setText(currentProgress + "%");
 
         //TODO Read progress from DB
     }

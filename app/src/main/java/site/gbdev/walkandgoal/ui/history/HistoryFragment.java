@@ -36,6 +36,7 @@ import java.util.List;
 import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.db.FitnessDbWrapper;
 import site.gbdev.walkandgoal.models.Goal;
+import site.gbdev.walkandgoal.models.Units;
 import site.gbdev.walkandgoal.ui.DatePickerFragment;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
@@ -49,9 +50,11 @@ public class HistoryFragment extends Fragment {
     Context context;
     RecyclerView recyclerView;
     List<Goal> goals = new ArrayList<>();
+    List<Double> progress = new ArrayList<>();
     public int selectedFilter = 0;
     int filterValue = 0;
     Date fromDate = null, toDate = null;
+    Units.Unit selectedUnits = Units.Unit.MILES;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -208,9 +211,11 @@ public class HistoryFragment extends Fragment {
 
     public void updateRecyclerView(){
 
-        goals = FitnessDbWrapper.getAllGoals(fromDate, toDate, context);
+        goals = FitnessDbWrapper.getAllFinishedGoals(selectedUnits, fromDate, toDate, context);
 
-        HistoryRecyclerViewAdapter adapter = new HistoryRecyclerViewAdapter(goals, context);
+        progress = FitnessDbWrapper.getActivityForHistory(selectedUnits, context, goals);
+
+        HistoryRecyclerViewAdapter adapter = new HistoryRecyclerViewAdapter(goals, context, progress);
         recyclerView.setAdapter(adapter);
     }
 
