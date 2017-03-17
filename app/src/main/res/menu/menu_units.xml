@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_units_steps"
+        android:title="@string/units_steps"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_units_metres"
+        android:title="@string/units_metres"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_units_yards"
+        android:title="@string/units_yards"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_units_km"
+        android:title="@string/units_km"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_units_miles"
+        android:title="@string/units_miles"
+        app:showAsAction="never"/>
+
+</menu>

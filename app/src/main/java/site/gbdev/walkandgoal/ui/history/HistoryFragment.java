@@ -9,7 +9,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,6 +62,7 @@ public class HistoryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -202,7 +205,37 @@ public class HistoryFragment extends Fragment {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.menu_change_units:
-                // TODO Add change units code here
+
+                View menuItemView = getActivity().findViewById(R.id.menu_change_units); // SAME ID AS MENU ID
+                Context wrapper = new ContextThemeWrapper(context, R.style.MyPopupMenu);
+                PopupMenu popup = new PopupMenu(wrapper, menuItemView);
+                popup.inflate(R.menu.menu_units);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                     @Override
+                     public boolean onMenuItemClick(MenuItem item) {
+                         switch (item.getItemId()) {
+                             case R.id.menu_units_steps:
+                                 selectedUnits = Units.Unit.STEPS;
+                                 break;
+                             case R.id.menu_units_metres:
+                                 selectedUnits = Units.Unit.METRES;
+                                 break;
+                             case R.id.menu_units_yards:
+                                 selectedUnits = Units.Unit.YARDS;
+                                 break;
+                             case R.id.menu_units_km:
+                                 selectedUnits = Units.Unit.KM;
+                                 break;
+                             case R.id.menu_units_miles:
+                                 selectedUnits = Units.Unit.MILES;
+                                 break;
+                         }
+                         updateRecyclerView();
+                         return false;
+                     }
+                 });
+                // ...
+                popup.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

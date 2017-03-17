@@ -27,6 +27,12 @@
 
     <string name="button_add">ADD</string>
 
+    <string name="units_steps">Steps</string>
+    <string name="units_metres">Metres</string>
+    <string name="units_yards">Yards</string>
+    <string name="units_km">Km</string>
+    <string name="units_miles">Miles</string>
+
     <string-array name="units_array">
         <item>Steps</item>
         <item>Metres</item>
