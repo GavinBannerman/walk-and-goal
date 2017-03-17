@@ -19,4 +19,18 @@
             android:defaultValue="false" />
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="History"
+        android:key="pref_key_history_settings">
+
+        <ListPreference
+            android:key="pref_history_units"
+            android:title="Default Units"
+            android:summary="%s"
+            android:entries="@array/units_array"
+            android:entryValues="@array/units_array"
+            android:defaultValue="@string/units_steps"/>
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

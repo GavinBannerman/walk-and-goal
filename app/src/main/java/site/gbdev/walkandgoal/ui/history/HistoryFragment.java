@@ -3,7 +3,9 @@ package site.gbdev.walkandgoal.ui.history;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -56,13 +58,17 @@ public class HistoryFragment extends Fragment {
     public int selectedFilter = 0;
     int filterValue = 0;
     Date fromDate = null, toDate = null;
-    Units.Unit selectedUnits = Units.Unit.MILES;
+    Units.Unit selectedUnits = Units.Unit.STEPS;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity().getApplicationContext();
         setHasOptionsMenu(true);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String unitPreference = sharedPreferences.getString("pref_history_units", "Steps");
+        selectedUnits = Units.getUNITS()[Units.getIdFromString(unitPreference)];
     }
 
     @Override
