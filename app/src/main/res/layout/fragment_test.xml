@@ -42,8 +42,7 @@
                 android:textSize="40sp"
                 android:maxLines="1"
                 android:ellipsize="marquee"
-                android:textColor="@color/colorTextPrimary"
-                android:text="My Active Goal" />
+                android:textColor="@color/colorTextPrimary" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -53,15 +52,14 @@
                 android:maxLines="1"
                 android:ellipsize="marquee"
                 android:layout_below="@+id/home_current_goal_name"
-                android:textColor="@color/colorTextSecondary"
-                android:text="2000 Steps" />
+                android:textColor="@color/colorTextSecondary" />
 
             <ProgressBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/home_current_progress_bar"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:progress="75"
+                android:progress="0"
                 android:max="100"
                 android:layout_below="@+id/home_current_goal_distance"
                 android:layout_marginTop="5dp"/>
@@ -76,8 +74,7 @@
                 android:layout_below="@+id/home_current_progress_bar"
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@+id/home_current_progress_text"
-                android:textColor="@color/colorTextSecondary"
-                android:text="1500 Steps" />
+                android:textColor="@color/colorTextSecondary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -88,8 +85,7 @@
                 android:ellipsize="marquee"
                 android:layout_below="@+id/home_current_progress_bar"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/colorTextSecondary"
-                android:text="75%" />
+                android:textColor="@color/colorTextSecondary" />
 
         </RelativeLayout>
 

@@ -148,8 +148,11 @@ public class HomeFragment extends Fragment implements RecyclerViewRefresher {
             currentProgressText.setText(currentProgress + "%");
             progressBar.setProgress(currentProgress);
         } else {
+            activityToday = FitnessDbWrapper.getTotalActivityForDate(Units.Unit.STEPS, null, context);
+            DecimalFormat format = new DecimalFormat("0.#");
+            currentDistance.setText(format.format(activityToday) + " " + Units.Unit.STEPS.getName());
             activeGoalName.setText("");
-            activeGoalDistance.setText("");
+            activeGoalDistance.setText("No active goal");
         }
 
         HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(goals, context, this);
