@@ -2,13 +2,15 @@ package site.gbdev.walkandgoal.models;
 
 import android.util.Log;
 
+import java.io.Serializable;
+
 /**
  * Created by gavin on 13/03/2017.
  */
 
 public class Units {
 
-    public enum Unit {
+    public enum Unit implements Serializable {
         STEPS ("Steps", 1.0),
         METRES ("Metres", 0.762),
         YARDS ("Yards", 0.833333),

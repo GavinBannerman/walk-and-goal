@@ -9,7 +9,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +39,7 @@ import site.gbdev.walkandgoal.models.Goal;
 import site.gbdev.walkandgoal.models.Units;
 import site.gbdev.walkandgoal.ui.AddGoalActivity;
 import site.gbdev.walkandgoal.ui.DatePickerFragment;
+import site.gbdev.walkandgoal.ui.util.ItemClickSupport;
 
 /**
  * Created by gavin on 07/02/2017.
@@ -83,6 +87,22 @@ public class StatisticsFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Intent intent = new Intent(context, StatisticsActivity.class);
+                intent.putExtra("name", goals.get(position).getName());
+                intent.putExtra("fromDate", fromDate);
+                intent.putExtra("toDate", toDate);
+                intent.putExtra("units", selectedUnits);
+                startActivity(intent);
+            }
+        });
+
         updateRecyclerView();
 
         final DatePickerDialog.OnDateSetListener fromDateListener = new DatePickerDialog.OnDateSetListener() {
@@ -96,6 +116,7 @@ public class StatisticsFragment extends Fragment {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
                 String formattedDate = simpleDateFormat.format(calendar.getTime());
                 datePickerButton.setText(formattedDate);
+                updateRecyclerView();
             }
         };
 
@@ -110,6 +131,7 @@ public class StatisticsFragment extends Fragment {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
                 String formattedDate = simpleDateFormat.format(calendar.getTime());
                 datePickerButton.setText(formattedDate);
+                updateRecyclerView();
             }
         };
 
@@ -181,8 +203,39 @@ public class StatisticsFragment extends Fragment {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.menu_change_units:
-                // TODO Add change units code here
+
+                View menuItemView = getActivity().findViewById(R.id.menu_change_units); // SAME ID AS MENU ID
+                Context wrapper = new ContextThemeWrapper(context, R.style.MyPopupMenu);
+                PopupMenu popup = new PopupMenu(wrapper, menuItemView);
+                popup.inflate(R.menu.menu_units);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.menu_units_steps:
+                                selectedUnits = Units.Unit.STEPS;
+                                break;
+                            case R.id.menu_units_metres:
+                                selectedUnits = Units.Unit.METRES;
+                                break;
+                            case R.id.menu_units_yards:
+                                selectedUnits = Units.Unit.YARDS;
+                                break;
+                            case R.id.menu_units_km:
+                                selectedUnits = Units.Unit.KM;
+                                break;
+                            case R.id.menu_units_miles:
+                                selectedUnits = Units.Unit.MILES;
+                                break;
+                        }
+                        updateRecyclerView();
+                        return false;
+                    }
+                });
+                // ...
+                popup.show();
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -190,7 +243,7 @@ public class StatisticsFragment extends Fragment {
 
     public void updateRecyclerView(){
 
-        goals = FitnessDbWrapper.getAllFinishedGoals(selectedUnits, fromDate, toDate, context);
+        goals = FitnessDbWrapper.getAllFinishedGoalsGroupedByName(selectedUnits, fromDate, toDate, context);
 
         StatisticsRecyclerViewAdapter adapter = new StatisticsRecyclerViewAdapter(context, goals);
         recyclerView.setAdapter(adapter);
