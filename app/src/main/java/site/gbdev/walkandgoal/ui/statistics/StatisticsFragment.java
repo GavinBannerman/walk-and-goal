@@ -3,10 +3,14 @@ package site.gbdev.walkandgoal.ui.statistics;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,9 +25,15 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import site.gbdev.walkandgoal.R;
+import site.gbdev.walkandgoal.db.FitnessDbWrapper;
+import site.gbdev.walkandgoal.models.Goal;
+import site.gbdev.walkandgoal.models.Units;
 import site.gbdev.walkandgoal.ui.AddGoalActivity;
 import site.gbdev.walkandgoal.ui.DatePickerFragment;
 
@@ -34,12 +44,20 @@ import site.gbdev.walkandgoal.ui.DatePickerFragment;
 public class StatisticsFragment extends Fragment {
 
     Context context;
+    RecyclerView recyclerView;
+    List<Goal> goals = new ArrayList<>();
+    Date fromDate = null, toDate = null;
+    Units.Unit selectedUnits = Units.Unit.STEPS;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getActivity().getApplicationContext();
+        context = getActivity();
         setHasOptionsMenu(true);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String unitPreference = sharedPreferences.getString("pref_statistics_units", "Steps");
+        selectedUnits = Units.getUNITS()[Units.getIdFromString(unitPreference)];
     }
 
     @Override
@@ -59,6 +77,14 @@ public class StatisticsFragment extends Fragment {
         Button fromButton = (Button) getView().findViewById(R.id.button_from_date);
         Button toButton = (Button) getView().findViewById(R.id.button_to_date);
 
+        recyclerView = (RecyclerView) getView().findViewById(R.id.statistics_recyclerView);
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        updateRecyclerView();
+
         final DatePickerDialog.OnDateSetListener fromDateListener = new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -66,6 +92,7 @@ public class StatisticsFragment extends Fragment {
                 Button datePickerButton = (Button) getView().findViewById(R.id.button_from_date);
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day);
+                fromDate = calendar.getTime();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
                 String formattedDate = simpleDateFormat.format(calendar.getTime());
                 datePickerButton.setText(formattedDate);
@@ -79,6 +106,7 @@ public class StatisticsFragment extends Fragment {
                 Button datePickerButton = (Button) getView().findViewById(R.id.button_to_date);
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day);
+                toDate = calendar.getTime();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yy");
                 String formattedDate = simpleDateFormat.format(calendar.getTime());
                 datePickerButton.setText(formattedDate);
@@ -117,13 +145,24 @@ public class StatisticsFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 if (position == 0) {
                     fromToDateSection.setVisibility(View.GONE);
+                    fromDate = null;
+                    toDate = null;
                 } else if (position == 1) {
                     fromToDateSection.setVisibility(View.GONE);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.add(Calendar.DATE, -7);
+                    fromDate = calendar.getTime();
+                    toDate = null;
                 } else if (position == 2) {
                     fromToDateSection.setVisibility(View.GONE);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.add(Calendar.DATE, -28);
+                    fromDate = calendar.getTime();
+                    toDate = null;
                 } else if (position == 3) {
                     fromToDateSection.setVisibility(View.VISIBLE);
                 }
+                updateRecyclerView();
             }
 
             @Override
@@ -147,5 +186,13 @@ public class StatisticsFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void updateRecyclerView(){
+
+        goals = FitnessDbWrapper.getAllFinishedGoals(selectedUnits, fromDate, toDate, context);
+
+        StatisticsRecyclerViewAdapter adapter = new StatisticsRecyclerViewAdapter(context, goals);
+        recyclerView.setAdapter(adapter);
     }
 }

@@ -389,6 +389,21 @@ public class FitnessDbWrapper {
         return goals;
     }
 
+    public static void deleteHistory(Context context){
+
+        SQLiteDatabase db = getWritableDatabase(context);
+
+        String selection = FitnessContract.GoalEntry.COLUMN_NAME_FINISHED + " = ?";
+        String[] selectionArgs = { String.valueOf(1)};
+        db.delete(FitnessContract.GoalEntry.TABLE_NAME, selection, selectionArgs);
+
+        String selection2 = FitnessContract.ActivityEntry.COLUMN_NAME_DATE + " < ?";
+        String[] selectionArgs2 = { String.valueOf(getStartOfDay(new Date()).getTime())};
+        db.delete(FitnessContract.ActivityEntry.TABLE_NAME, selection2, selectionArgs2);
+
+        db.close();
+    }
+
     private static SQLiteDatabase getReadableDatabase(Context context){
 
         FitnessDbHelper mDbHelper = new FitnessDbHelper(context);

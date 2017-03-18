@@ -22,6 +22,7 @@ import java.util.List;
 
 import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.models.Goal;
+import site.gbdev.walkandgoal.models.HistoricGoal;
 
 /**
  * Created by gavin on 14/02/2017.
@@ -29,14 +30,12 @@ import site.gbdev.walkandgoal.models.Goal;
 
 public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecyclerViewAdapter.GoalViewHolder> {
 
-    List<Goal> goals;
+    List<HistoricGoal> historicGoals;
     Context context;
-    List<Double> progress;
 
-    HistoryRecyclerViewAdapter(List<Goal> goals, Context context, List<Double> progress){
-        this.goals = goals;
+    HistoryRecyclerViewAdapter(Context context, List<HistoricGoal> historicGoals){
+        this.historicGoals = historicGoals;
         this.context = context;
-        this.progress = progress;
     }
 
     public static class GoalViewHolder extends RecyclerView.ViewHolder {
@@ -59,7 +58,7 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 
     @Override
     public int getItemCount() {
-        return goals.size();
+        return historicGoals.size();
     }
 
     @Override
@@ -73,20 +72,17 @@ public class HistoryRecyclerViewAdapter extends RecyclerView.Adapter<HistoryRecy
 
     @Override
     public void onBindViewHolder(final GoalViewHolder goalViewHolder, int i) {
-        goalViewHolder.goalName.setText(goals.get(i).getName());
-        String displayDistance = "/" + goals.get(i).getDisplayDistance();
+        goalViewHolder.goalName.setText(historicGoals.get(i).getGoal().getName());
+        String displayDistance = "/" + historicGoals.get(i).getGoal().getDisplayDistance();
         goalViewHolder.goalDistance.setText(displayDistance);
-        long formattableTime = goals.get(i).getDate().getTime();
+        long formattableTime = historicGoals.get(i).getGoal().getDate().getTime();
         SimpleDateFormat format1 = new SimpleDateFormat("dd");
         SimpleDateFormat format2 = new SimpleDateFormat("MMM yy");
         goalViewHolder.goalDay.setText(format1.format(formattableTime));
         goalViewHolder.goalMonth.setText(format2.format(formattableTime).toUpperCase());
         DecimalFormat format = new DecimalFormat("0.#");
-        goalViewHolder.goalCompleted.setText(String.valueOf(format.format(progress.get(i))));
-        int currentProgress = (int) (progress.get(i)/goals.get(i).getUnitDistance()*100);
-        goalViewHolder.goalPercentage.setText(currentProgress + "%");
-
-        //TODO Read progress from DB
+        goalViewHolder.goalCompleted.setText(String.valueOf(format.format(historicGoals.get(i).getProgress())));
+        goalViewHolder.goalPercentage.setText(historicGoals.get(i).getPercentageCompleted() + "%");
     }
 
     @Override

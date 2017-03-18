@@ -131,6 +131,7 @@ public class CompletionDialogFragment extends DialogFragment {
                 parentFragment.selectedFilter = spinner.getSelectedItemPosition();
 
                 filterCompletionButton.setText(returnString);
+                parentFragment.updateRecyclerView();
                 dismiss();
             }
         });

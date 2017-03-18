@@ -10,6 +10,7 @@
     <string name="menu_item_home_edit">Edit</string>
     <string name="menu_item_home_delete">Delete</string>
     <string name="menu_change_units">Change Units</string>
+    <string name="menu_delete_history">Delete History</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.ContextThemeWrapper;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -35,11 +36,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.db.FitnessDbWrapper;
 import site.gbdev.walkandgoal.models.Goal;
+import site.gbdev.walkandgoal.models.HistoricGoal;
 import site.gbdev.walkandgoal.models.Units;
 import site.gbdev.walkandgoal.ui.DatePickerFragment;
 
@@ -63,7 +66,7 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getActivity().getApplicationContext();
+        context = getActivity();
         setHasOptionsMenu(true);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -94,6 +97,10 @@ public class HistoryFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         updateRecyclerView();
 
@@ -204,7 +211,7 @@ public class HistoryFragment extends Fragment {
 
     public void onCreateOptionsMenu(
             Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_statistics, menu);
+        inflater.inflate(R.menu.menu_history, menu);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -243,6 +250,28 @@ public class HistoryFragment extends Fragment {
                 // ...
                 popup.show();
                 return true;
+
+            case R.id.menu_delete_history:
+                Context wrapper2 = new ContextThemeWrapper(context, R.style.MyPopupMenu);
+                AlertDialog.Builder alert = new AlertDialog.Builder(wrapper2);
+
+                alert.setTitle("Delete History");
+                alert.setMessage("Are you sure you want to permanently delete history?");
+                alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        FitnessDbWrapper.deleteHistory(context);
+                        updateRecyclerView();
+                    }
+                });
+                alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                alert.show();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -254,8 +283,44 @@ public class HistoryFragment extends Fragment {
 
         progress = FitnessDbWrapper.getActivityForHistory(selectedUnits, context, goals);
 
-        HistoryRecyclerViewAdapter adapter = new HistoryRecyclerViewAdapter(goals, context, progress);
+        List<HistoricGoal> historicGoals = new ArrayList<>();
+
+        for (int i = 0; i < goals.size(); i++){
+            historicGoals.add(new HistoricGoal(goals.get(i), progress.get(i)));
+        }
+
+        HistoryRecyclerViewAdapter adapter = new HistoryRecyclerViewAdapter(context, filterByCompletion(historicGoals));
         recyclerView.setAdapter(adapter);
+    }
+
+    private List<HistoricGoal> filterByCompletion(List<HistoricGoal> historicGoals){
+
+        for (Iterator<HistoricGoal> iterator = historicGoals.iterator(); iterator.hasNext();){
+            HistoricGoal historicGoal = iterator.next();
+
+            switch (selectedFilter){
+
+                case 1:
+                    if (historicGoal.getPercentageCompleted() >= filterValue){
+                        iterator.remove();
+                    }
+                    break;
+
+                case 2:
+                    if (historicGoal.getPercentageCompleted() <= filterValue){
+                        iterator.remove();
+                    }
+                    break;
+
+                case 3:
+                    if (historicGoal.getPercentageCompleted() < 100){
+                        iterator.remove();
+                    }
+                    break;
+            }
+        }
+
+        return historicGoals;
     }
 
 }
