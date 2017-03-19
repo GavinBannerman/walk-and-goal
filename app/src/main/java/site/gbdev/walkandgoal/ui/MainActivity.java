@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import java.util.Date;
 
 import site.gbdev.walkandgoal.R;
+import site.gbdev.walkandgoal.models.Units;
 import site.gbdev.walkandgoal.ui.history.HistoryFragment;
 import site.gbdev.walkandgoal.ui.home.HomeFragment;
 import site.gbdev.walkandgoal.ui.settings.PreferencesActivity;
@@ -36,6 +37,11 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        double mapping = Double.valueOf(sharedPreferences.getString("pref_step_mapping", "0.762"));
+
+        Units.setStepMapping(mapping);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +74,6 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean testMode = sharedPreferences.getBoolean("pref_test_mode", false);
         String tag = "";
 

@@ -12,13 +12,13 @@ public class Units {
 
     public enum Unit implements Serializable {
         STEPS ("Steps", 1.0),
-        METRES ("Metres", 0.762),
-        YARDS ("Yards", 0.833333),
-        KM ("Km", 0.000762),
-        MILES ("Miles", 0.000473);
+        METRES ("Metres", 1.0),
+        YARDS ("Yards", 1.093613),
+        KM ("Km", 0.001),
+        MILES ("Miles", 0.000621371);
 
         private final String name;
-        private final double conversion;
+        private double conversion;
 
         Unit(String name, double conversion){
             this.name = name;
@@ -27,10 +27,18 @@ public class Units {
 
         public double getConversion() {return conversion;}
         public String getName() {return name;}
+
+        public void setConversion(double value){
+            this.conversion = value;
+        }
     }
 
-    private static final Unit[] UNITS = {Unit.STEPS, Unit.METRES, Unit.YARDS, Unit.KM, Unit.MILES};
+    private static Unit[] UNITS = {Unit.STEPS, Unit.METRES, Unit.YARDS, Unit.KM, Unit.MILES};
     public static Unit[] getUNITS() {return UNITS;}
+
+    public static void setStepMapping(double mapping){
+        UNITS[0].setConversion(mapping);
+    }
 
     public static double convertFromSteps(double distance, Unit newUnit){
         return (distance * newUnit.getConversion());
@@ -48,8 +56,8 @@ public class Units {
         return (distance / UNITS[unitId].getConversion());
     }
 
-    public static double convertToSteps(double distance, String unit){
-        Unit unitEnum = Unit.STEPS;
+    public static double convertToMetres(double distance, String unit){
+        Unit unitEnum = Unit.METRES;
 
         for (Unit possibleUnit : UNITS){
             if (possibleUnit.getName().equals(unit)){

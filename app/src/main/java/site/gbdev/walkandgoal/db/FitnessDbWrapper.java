@@ -130,9 +130,7 @@ public class FitnessDbWrapper {
 
         while(cursor.moveToNext()) {
             total = cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
-            String groupDate = cursor.getString(cursor.getColumnIndexOrThrow("groupdate"));
             progress.add(total * unit.getConversion());
-            Log.d("DBrow", groupDate + " = " + total);
         }
 
         cursor.close();
