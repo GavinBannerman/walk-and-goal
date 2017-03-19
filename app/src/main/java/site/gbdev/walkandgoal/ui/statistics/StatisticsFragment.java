@@ -26,7 +26,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,6 +54,8 @@ public class StatisticsFragment extends Fragment {
     List<Goal> goals = new ArrayList<>();
     Date fromDate = null, toDate = null;
     Units.Unit selectedUnits = Units.Unit.STEPS;
+
+    TextView minProgress, maxProgress, avgProgress;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +84,10 @@ public class StatisticsFragment extends Fragment {
 
         Button fromButton = (Button) getView().findViewById(R.id.button_from_date);
         Button toButton = (Button) getView().findViewById(R.id.button_to_date);
+
+        minProgress = (TextView) getView().findViewById(R.id.statistics_min_activity_val);
+        maxProgress = (TextView) getView().findViewById(R.id.statistics_max_activity_val);
+        avgProgress = (TextView) getView().findViewById(R.id.statistics_avg_activity_val);
 
         recyclerView = (RecyclerView) getView().findViewById(R.id.statistics_recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -244,6 +252,34 @@ public class StatisticsFragment extends Fragment {
     public void updateRecyclerView(){
 
         goals = FitnessDbWrapper.getAllFinishedGoalsGroupedByName(selectedUnits, fromDate, toDate, context);
+
+        List<Double> progress = FitnessDbWrapper.getDailyActivityForRange(selectedUnits, fromDate, toDate, context);
+
+        double minActivity = Integer.MAX_VALUE;
+        double maxActivity = Integer.MIN_VALUE;
+        double totalActivity = 0;
+        for (Double activity : progress){
+            totalActivity = totalActivity + activity;
+
+            if (activity < minActivity){
+                minActivity = activity;
+            }
+            if (activity > maxActivity){
+                maxActivity = activity;
+            }
+        }
+
+        DecimalFormat format = new DecimalFormat("0.#");
+
+        if (minActivity != Integer.MAX_VALUE){
+            minProgress.setText(format.format(minActivity) + " " + selectedUnits.getName());
+            avgProgress.setText(format.format(totalActivity/progress.size()) + " " + selectedUnits.getName());
+            maxProgress.setText(format.format(maxActivity) + " " + selectedUnits.getName());
+        } else {
+            minProgress.setText("N/A");
+            avgProgress.setText("N/A");
+            maxProgress.setText("N/A");
+        }
 
         StatisticsRecyclerViewAdapter adapter = new StatisticsRecyclerViewAdapter(context, goals);
         recyclerView.setAdapter(adapter);

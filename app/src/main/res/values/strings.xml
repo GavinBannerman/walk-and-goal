@@ -71,13 +71,13 @@
     <string name="date_from">FROM</string>
     <string name="date_to">TO</string>
 
-    <string name="statistics_min_activity">Minimum Daily Activity</string>
-    <string name="statistics_avg_activity">Average Daily Activity</string>
-    <string name="statistics_max_activity">Maximum Daily Activity</string>
+    <string name="statistics_min_activity">Min. Daily Activity</string>
+    <string name="statistics_avg_activity">Avg. Daily Activity</string>
+    <string name="statistics_max_activity">Max. Daily Activity</string>
 
-    <string name="statistics_min_goal">Minimum Goal Completion</string>
-    <string name="statistics_avg_goal">Average Goal Completion</string>
-    <string name="statistics_max_goal">Maximum Goal Completion</string>
+    <string name="statistics_min_goal">Min. Goal Completion</string>
+    <string name="statistics_avg_goal">Avg. Goal Completion</string>
+    <string name="statistics_max_goal">Max. Goal Completion</string>
 
     <string name="test_choose_date">Choose a test date</string>
 

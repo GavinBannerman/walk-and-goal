@@ -8,7 +8,7 @@ import android.provider.BaseColumns;
 
 public class FitnessContract {
 
-    public static final  int    DATABASE_VERSION = 3;
+    public static final  int    DATABASE_VERSION = 5;
     public static final  String DATABASE_NAME = "fitness.db";
     private static final String INTEGER_TYPE = " INTEGER";
     private static final String TEXT_TYPE = " TEXT";

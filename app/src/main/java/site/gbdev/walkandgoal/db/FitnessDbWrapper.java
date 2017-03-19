@@ -92,6 +92,55 @@ public class FitnessDbWrapper {
         return progress;
     }
 
+    public static List<Double> getDailyActivityForRange(Units.Unit unit, Date fromDate, Date toDate, Context context){
+
+        SQLiteDatabase db = getReadableDatabase(context);
+        List<Double> progress = new ArrayList<>();
+
+        Cursor cursor;
+
+        if (fromDate == null && toDate == null){
+
+            cursor = db.rawQuery(
+                    "SELECT date((" + FitnessContract.ActivityEntry.COLUMN_NAME_DATE + "/1000), 'unixepoch') AS 'groupdate', SUM(" + FitnessContract.ActivityEntry.COLUMN_NAME_DISTANCE + ") AS 'total' " +
+                            "FROM " + FitnessContract.ActivityEntry.TABLE_NAME +
+                            " GROUP BY groupdate;",
+                    null                            // The values for the WHERE clause
+            );
+
+        } else {
+
+            if (toDate == null){
+                toDate = new Date();
+            }
+
+            String[] selectionArgs = {String.valueOf(getStartOfDay(fromDate).getTime()), String.valueOf(getEndOfDay(toDate).getTime())};
+
+            cursor = db.rawQuery(
+                    "SELECT date((" + FitnessContract.ActivityEntry.COLUMN_NAME_DATE + "/1000), 'unixepoch') AS 'groupdate', SUM(" + FitnessContract.ActivityEntry.COLUMN_NAME_DISTANCE + ") AS 'total' " +
+                            "FROM " + FitnessContract.ActivityEntry.TABLE_NAME +
+                            " WHERE " + FitnessContract.ActivityEntry.COLUMN_NAME_DATE + " >= ? AND "
+                            + FitnessContract.ActivityEntry.COLUMN_NAME_DATE + " < ?" +
+                            " GROUP BY groupdate;",
+                    selectionArgs                            // The values for the WHERE clause
+            );
+        }
+
+        double total = 0;
+
+        while(cursor.moveToNext()) {
+            total = cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+            String groupDate = cursor.getString(cursor.getColumnIndexOrThrow("groupdate"));
+            progress.add(total * unit.getConversion());
+            Log.d("DBrow", groupDate + " = " + total);
+        }
+
+        cursor.close();
+        db.close();
+
+        return progress;
+    }
+
     public static int addActivity(double distance, Date date, Context context){
 
         if (date == null){

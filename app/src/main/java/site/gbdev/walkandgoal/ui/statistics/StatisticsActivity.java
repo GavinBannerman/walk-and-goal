@@ -73,7 +73,6 @@ public class StatisticsActivity extends AppCompatActivity {
             }
         }
 
-
         DecimalFormat format = new DecimalFormat("0.#");
         avgGoalDistance.setText(format.format(goalTotal/((double) goals.size())) + " " + Units.getUNITS()[goals.get(0).getUnit()].getName());
 
