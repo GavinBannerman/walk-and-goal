@@ -45,13 +45,13 @@ public class MainActivity extends AppCompatActivity
         Intent myIntent = new Intent(this , MyBroadcastReceiver.class);
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, myIntent, 0);
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 00);
-        calendar.set(Calendar.MINUTE, 15);
-        calendar.set(Calendar.SECOND, 00);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.set(Calendar.HOUR_OF_DAY, 00);
+//        calendar.set(Calendar.MINUTE, 15);
+//        calendar.set(Calendar.SECOND, 00);
 
         alarmManager.cancel(pendingIntent);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY , pendingIntent);
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY , pendingIntent);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         double mapping = Double.valueOf(sharedPreferences.getString("pref_step_mapping", "0.762"));
