@@ -200,6 +200,11 @@ public class StatisticsFragment extends Fragment {
             }
 
         });
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String spinnerPreference = sharedPreferences.getString("pref_statistics_time", "for all history");
+
+        spinner.setSelection(adapter.getPosition(spinnerPreference));
     }
 
     public void onCreateOptionsMenu(

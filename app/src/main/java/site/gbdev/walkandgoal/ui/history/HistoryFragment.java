@@ -203,6 +203,10 @@ public class HistoryFragment extends Fragment {
 
         });
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String spinnerPreference = sharedPreferences.getString("pref_history_time", "from all history");
+
+        spinner.setSelection(spinnerAdapter.getPosition(spinnerPreference));
     }
 
     public void onCreateOptionsMenu(

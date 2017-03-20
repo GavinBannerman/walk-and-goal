@@ -90,4 +90,7 @@
         <item>Show fully completed goals</item>
     </string-array>
 
+    <string name="all_history">from all history</string>
+    <string name="statistics_all_history">for all history</string>
+
 </resources>

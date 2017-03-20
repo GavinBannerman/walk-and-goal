@@ -31,6 +31,14 @@
             android:entryValues="@array/units_array"
             android:defaultValue="@string/units_steps"/>
 
+        <ListPreference
+            android:key="pref_history_time"
+            android:title="Default Time Period"
+            android:summary="%s"
+            android:entries="@array/period_array_goals"
+            android:entryValues="@array/period_array_goals"
+            android:defaultValue="@string/all_history"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -44,6 +52,14 @@
             android:entries="@array/units_array"
             android:entryValues="@array/units_array"
             android:defaultValue="@string/units_steps"/>
+
+        <ListPreference
+            android:key="pref_statistics_time"
+            android:title="Default Time Period"
+            android:summary="%s"
+            android:entries="@array/period_array"
+            android:entryValues="@array/period_array"
+            android:defaultValue="@string/statistics_all_history"/>
 
     </PreferenceCategory>
 
