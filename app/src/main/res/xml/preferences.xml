@@ -8,7 +8,8 @@
             android:key="pref_step_mapping"
             android:title="@string/pref_mapping"
             android:summary="@string/pref_mapping_summary"
-            android:defaultValue="0.762" />
+            android:defaultValue="0.762"
+            android:inputType="numberDecimal"/>
         <SwitchPreference
             android:key="pref_edit_goals"
             android:title="@string/pref_edit_goals"
