@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.Calendar;
@@ -40,7 +42,10 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             HistoricGoal historicGoal = new HistoricGoal(goal, progress);
             FitnessDbWrapper.setFinished(goal, yesterday, context);
 
-            if (historicGoal.getPercentageCompleted() >= 100) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            boolean notifications = sharedPreferences.getBoolean("pref_notifications", true);
+
+            if (historicGoal.getPercentageCompleted() >= 100 && notifications) {
 
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
 
@@ -49,7 +54,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
                 Notification n = new Notification.Builder(context)
                         .setContentTitle("Goal Completed!")
-                        .setContentText(goal.getName() + " completed")
+                        .setContentText(goal.getName() + " - " + goal.getDisplayDistance())
                         .setSmallIcon(R.drawable.ic_menu_add_goal)
                         .setContentIntent(pIntent)
                         .setAutoCancel(true).build();

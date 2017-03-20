@@ -1,5 +1,8 @@
 package site.gbdev.walkandgoal.ui.home;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,8 +25,13 @@ import java.util.List;
 import site.gbdev.walkandgoal.R;
 import site.gbdev.walkandgoal.db.FitnessDbWrapper;
 import site.gbdev.walkandgoal.models.Goal;
+import site.gbdev.walkandgoal.models.HistoricGoal;
+import site.gbdev.walkandgoal.models.Units;
 import site.gbdev.walkandgoal.ui.AddGoalActivity;
+import site.gbdev.walkandgoal.ui.MainActivity;
 import site.gbdev.walkandgoal.ui.RecyclerViewRefresher;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * Created by gavin on 07/02/2017.
@@ -94,7 +102,29 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
                                 boolean testMode = sharedPreferences.getBoolean("pref_test_mode", false);
 
                                 if (testMode) {
+                                    double progress = FitnessDbWrapper.getTotalActivityForDate(Units.getUNITS()[goals.get(id).getUnit()], homeFragment.getDate(), context);
                                     FitnessDbWrapper.setFinished(goals.get(id), homeFragment.getDate(), context);
+                                    HistoricGoal historicGoal = new HistoricGoal(goals.get(id), progress);
+
+                                    boolean notifications = sharedPreferences.getBoolean("pref_notifications", true);
+
+                                    if (historicGoal.getPercentageCompleted() >= 100 && notifications) {
+
+                                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+
+                                        Intent newIntent = new Intent(context, MainActivity.class);
+                                        PendingIntent pIntent = PendingIntent.getActivity(context, (int) System.currentTimeMillis(), newIntent, 0);
+
+                                        Notification n = new Notification.Builder(context)
+                                                .setContentTitle("Goal Completed!")
+                                                .setContentText(historicGoal.getGoal().getName() + " - " + historicGoal.getGoal().getDisplayDistance())
+                                                .setSmallIcon(R.drawable.ic_menu_add_goal)
+                                                .setContentIntent(pIntent)
+                                                .setAutoCancel(true).build();
+
+                                        notificationManager.notify(0, n);
+                                    }
+
                                 } else {
                                     FitnessDbWrapper.setActive(goals.get(id), homeFragment.getDate(), context);
                                 }

@@ -17,6 +17,10 @@
             android:key="pref_test_mode"
             android:title="Test Mode"
             android:defaultValue="false" />
+        <SwitchPreference
+            android:key="pref_notifications"
+            android:title="Goal Complete Notifications"
+            android:defaultValue="true" />
     </PreferenceCategory>
 
     <PreferenceCategory
