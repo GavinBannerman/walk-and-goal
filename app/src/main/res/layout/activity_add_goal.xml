@@ -46,6 +46,7 @@
                     android:id="@+id/input_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLength="40"
                     android:hint="@string/form_label_name" />
             </android.support.design.widget.TextInputLayout>
 
@@ -60,6 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
+                    android:maxLength="9"
                     android:hint="@string/form_label_distance" />
             </android.support.design.widget.TextInputLayout>
 
